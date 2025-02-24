@@ -1,0 +1,15 @@
+# Archivos del sistema (innecesarios en GitHub)
+.DS_Store
+Thumbs.db
+
+# Archivos de respaldo o temporales
+*.log
+*.bak
+*.tmp
+
+# Carpetas ocultas de editores de código
+.vscode/
+.idea/
+
+# Si usas Node.js en el futuro, puedes ignorar node_modules
+node_modules/
