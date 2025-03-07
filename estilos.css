@@ -1,18 +1,23 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
-  width: 960px;
-  margin: 0 auto;
+  margin: 0% 50px;
+  padding-top: 60px;
 }
 nav {
   background: white;
   padding: 10px;
   text-align:center;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  width: 100%;
 }
 nav a {
   color: black;
   text-decoration: none;
   padding: 10px 15px;
   display: inline-block;
+  margin-top: auto;
 }
 .hero {
   background-image: url(/imagenes/31528e70-7916-49cd-b296-c21ca4962c9c.jpeg);
@@ -58,4 +63,16 @@ nav a {
 
 .cta-button:hover {
   background-color: #e05f00;
+}
+.leer {
+  text-align:end;
+}
+.read-more-btn {
+  display: block;
+  margin: 15px 0;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
