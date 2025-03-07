@@ -1,3 +1,8 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  width: 960px;
+  margin: 0 auto;
+}
 nav {
   background: white;
   padding: 10px;
@@ -10,11 +15,11 @@ nav a {
   display: inline-block;
 }
 .hero {
-  background-image: url(/imagenes/Dunas_de_Bani_1440x900.png);
+  background-image: url(/imagenes/31528e70-7916-49cd-b296-c21ca4962c9c.jpeg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100vh;
+  height: 600px;
   width: 100%;
   display: flex;
   align-items: center;
