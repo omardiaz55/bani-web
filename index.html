@@ -7,148 +7,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Mi Baní</title>
-    <style>
-        body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-}
-
-/* Navbar sencillo */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #ffffff;
-  padding: 15px 30px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-}
-
-.navbar-links {
-  list-style: none;
-  display: flex;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
-}
-
-.navbar-links li a {
-  text-decoration: none;
-  color: #333;
-  font-size: 16px;
-  transition: color 0.3s;
-}
-
-.navbar-links li a:hover {
-  color: #007BFF;
-}
-
-/* Responsivo básico */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .navbar-links {
-    flex-direction: column;
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .navbar-links li {
-    width: 100%;
-  }
-}
-
-.hero {
-  height: 500px; /* Altura fija para desktop */
-  width: 100%;
-  background-color: #f5f5f5; /* Fondo claro */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.hero h1 {
-  font-size: 5rem; /* Título grande */
-  margin: 0 0 20px;
-  color: #222;
-}
-
-.hero p {
-  font-size: 1rem; /* Subtítulo */
-  margin: 0;
-  color: #555;
-}
-
-.categorias {
-  background-color: rgb(255, 255, 255);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px; /* espacio entre tarjetas */
-  justify-content:center; /* centrar las tarjetas */
-  padding: 20px;
-}
-
-.tarjeta {
-  width: 250px;
-  height: 150px;
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease; 
-}
-
-.tarjeta:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.noticias {
-  background-color: #f5f5f5;
-}
-
-.loteria {
-    text-align: center;
-}
-
-.noticias {
-    text-align: center;
-    height: 300px;
-    background-color: gray;
-}
-
-.enlaces {
-    text-align: center;
-    height: 300px;
-}
-
-
-footer {
-  background-color: #222;
-  color: #fff;
-  text-align: center;
-  padding: 15px 10px;
-  font-size: 14px;
-}
-    </style>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <nav class="navbar">
@@ -158,36 +17,64 @@ footer {
           <li><a href="#categorias">Categorías</a></li>
           <li><a href="#contacto">Contacto</a></li>
         </ul>
-      </nav>
-
-      <section class="loteria"> 
-        <h2>LOTERIA DE HOY</h2>
-    </section>
-
+    </nav>
+      
     <section class="hero">
-            <h1>Bienvenido a Mi Baní</h1>
+        <div class="hero-content">
+            <h1>Bienvenidos a Mi Baní</h1>
             <p>Descubre la historia, cultura, gastronomía y los lugares más emblemáticos de Baní, una ciudad llena de tradición y belleza en República Dominicana.</p>
+        </div>
     </section>
-    
+        
     <section class="categorias">
-        <div class="tarjeta">Historia</div>
-        <div class="tarjeta">Cultura y Tradiciones</div>
-        <div class="tarjeta">Gastronomia</div>
-        <div class="tarjeta">Lugares de Interés</div>
-        <div class="tarjeta">Economía y Desarrollo</div>
-        <div class="tarjeta">Noticias y Eventos</div>
-        <div class="tarjeta">Foros y Comunidad</div>            
+        
+        <a href="/historia.html"><div class="tarjeta">
+            <img src="/imagenes/historia-card.jpeg" alt="casa de maximo gomez">
+            <h3>Historia</h3>
+        </div></a>
+        
+        <a href="/cultura.html"><div class="tarjeta">
+            <img src="/imagenes/cultura-card.jpg" alt="Descripción de la imagen">
+            <h3>Cultura y Tradiciones</h3>
+        </div></a>
+        
+        <a href="/gastronomia.html"><div class="tarjeta">
+            <img src="/imagenes/gastronomia-card.webp" alt="arepitas de mano">
+            <h3>Gastronomia</h3>
+        </div></a>
+
+        <a href="/lugares.html"><div class="tarjeta">
+            <img src="/imagenes/Diocesis-de-Bani.jpg" alt="Descripción de la imagen">
+            <h3>Lugares de Interes</h3>
+        </div></a>
+
+        <a href="/economia.html"><div class="tarjeta">
+            <img src="/imagenes/economia-card.jpg" alt="Descripción de la imagen">
+            <h3>Economia y Comercio</h3>
+        </div></a>
+        
+     </section>
+       
+        
+    <section class="loteria"> 
+        <h3>LOTERIA DE HOY</h3>
     </section>
 
     <section class="noticias">
-        <h2>NOTICIAS DESTACADAS</h2>
+        <h3>NOTICIAS DESTACADAS</h3>
     </section>
 
     <section class="enlaces">
-        <h2>ENLACES DESTACADOS</h2>
+        <h3>ENLACES DESTACADOS</h3>
     </section>
 
-   
+    <section>
+        <h3>Comunidad</h3>
+    </section>
+
+    <section>
+        Ubicacion Geografica
+    </section>
 
     <footer>
         <p>&copy; 2025 Mi Baní. Todos los derechos reservados.</p>
