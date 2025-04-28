@@ -105,7 +105,7 @@ body {
   margin: 0;
   color: #ffffff;
   text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6); /* Sombra */
-
+  text-align: left;
 }
 
 .categorias {
@@ -137,7 +137,7 @@ body {
 
 .tarjeta img {
   width: 100%;
-  height: 200px;
+  height: 300px;
   object-fit: cover;
 }
 
