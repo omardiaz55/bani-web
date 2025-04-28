@@ -1,10 +1,12 @@
 body {
+  min-height: 100vh; /* 100% de la altura visible */
   margin: 0;
   font-family: 'Arial', sans-serif;
 }
 
 /* Navbar sencillo */
 .navbar {
+  
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -172,8 +174,18 @@ body {
 .contenido-paginas {
   margin: 50px 300px 50px 300px;
 }
-.contenido-paginas h1, h2 {
+
+.contenido-paginas h1, h2, p {
   text-align: center;
+  font-family:'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.contenido-paginas h2 {
+  text-align: left;
+}
+
+.contenido-paginas p {
+  text-align: justify;
 }
 
 footer {
