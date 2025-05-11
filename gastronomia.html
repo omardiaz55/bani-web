@@ -5,28 +5,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>Gastronomía - Mi Baní</title>
-</head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<style>
+  body {
+  font-family: 'Open Sans', 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #222;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+.contenido-paginas {
+  max-width: 960px;
+  margin: auto;
+  padding: 20px;
+}
+
+h1, h2 {
+  font-weight: 700;
+  color: #003366;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  text-align: justify;
+}
+</style>
+  </head>
 <body>
   <nav class="navbar">
     <div class="navbar-logo">Mi Baní</div>
-      <ul class="navbar-links">
-        <li><a href="/index.html">Inicio</a></li>
-        <li><a href="/index.html#categorias">Categorías</a></li>
-        <li><a href="/contacto.html">Contacto</a></li>
-      </ul>
+  
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  
+    <ul class="navbar-links" id="navbarLinks">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="index.html#categorias">Categorías</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
   </nav>
   <div class="contenido-paginas" id="top">
     <header>
         <h1>Gastronomía</h1>
     </header>
-    <section>
-        <p>Conocida por su delicioso dulce de leche y otros manjares, la gastronomía de Baní es un reflejo de su identidad y tradición.</p>
+    <section id="gastronomia">
+      <br>
+      <br>
+      <h3>Sabores que cuentan historias</h3>
+      <p>
+        La gastronomía de Baní es una expresión auténtica de su gente, su tierra y su historia.
+        Con una mezcla de ingredientes criollos y técnicas tradicionales, Baní ha sabido conservar una cocina que deleita tanto a locales como visitantes.
+      </p>
+      <br>
+      <article class="producto">
+        <h3>Mango Banilejo: Orgullo Nacional</h3>
+        <img src="https://tse4.mm.bing.net/th?id=OIP.gMrx63NtAr0oeRc2IlB-bwHaFj&pid=Api" alt="Mangos de Baní" width="500">
+        <p>
+          Considerado uno de los mejores del país, el <strong>mango banilejo</strong> es símbolo de identidad y orgullo.
+          Cada año se celebra la <strong>Feria del Mango</strong> donde se promueve su uso en jugos, ceviches y postres.
+        </p>
+      </article>
+      <br>
+      <article class="producto">
+        <h3>Dulces Típicos de Paya</h3>
+        <img src="https://tse4.mm.bing.net/th?id=OIP.xBsEiYOa0MR9s12-oMXImQHaEK&pid=Api" alt="Dulces típicos de Baní" width="500">
+        <p>
+          En Paya se elaboran dulces artesanales como <a href="https://www.recetasdominicanas.org/dulce-de-leche" target="_blank">dulce de leche con coco</a>,
+          <a href="https://www.recetasgratis.net/receta-de-majarete-dominicano-74556.html" target="_blank">majarete</a> y <a href="https://www.cocinadominicana.com/159/arroz-con-leche" target="_blank">arroz con leche</a>, los cuales forman parte del sabor y tradición de Baní.
+        </p>
+      </article>
+      <br>
+      <article class="producto">
+        <h3>Arepitas de Burén</h3>
+        <img src="https://tse4.mm.bing.net/th?id=OIP.EHCR-A55zmT9afLtm-_ozwHaEK&pid=Api" alt="Arepitas de burén de Baní" width="500">
+        <p>
+          Hechas con maíz, anís y coco, las <strong>arepitas de burén</strong> se cocinan sobre hojas de plátano. Son tradicionales en desayunos y meriendas.
+          Puedes ver una receta <a href="https://www.cocinadominicana.com/2049/arepitas-de-maiz" target="_blank">aquí</a>.
+        </p>
+      </article>
+      <br>
+      <article class="producto">
+        <h3>Platos Criollos Tradicionales</h3>
+        <img src="https://tse2.mm.bing.net/th?id=OIP.U8D-VdUwE3EssHmzNH8tRwHaHa&pid=Api" alt="Platos criollos" width="500">
+        <ul>
+          <li><strong>Chivo guisado</strong> con orégano y ajíes</li>
+          <li><strong>Sancocho</strong> de carnes y víveres</li>
+          <li><strong>Moro yon yon</strong> con hongos</li>
+          <li><strong>Mangú</strong> con plátano banilejo</li>
+        </ul>
+        <p>
+          Todos son ejemplos del sabor criollo presente en la cocina diaria de las familias banilejas.
+        </p>
+      </article>
+      <br>
+      <article class="producto">
+        <h3>Productos Agrícolas y Agroindustriales</h3>
+        <p>
+          Baní también destaca por su producción agrícola:
+        </p>
+        <ul>
+          <li><strong>Café de Valdesia</strong> (con denominación de origen)</li>
+          <li>Tomate, maíz, guandul, lechosa, aguacate, cebolla</li>
+          <li><strong>Plátano y sal</strong> (de las salinas de Las Salinas)</li>
+          <li><strong>Cajuil</strong> (anacardo), consumido como dulce o fruta fresca</li>
+        </ul>
+      </article>
+    
+      <p><em>La gastronomía banileja es cultura viva que se comparte, se celebra y se saborea.</em></p>
     </section>
+    <br>
     <a href="#top">Volver arriba</a>
   </div>
   
   <footer>
     <p>&copy; 2025 Mi Baní. Todos los derechos reservados.</p>
   </footer>
+  <script src="script.js"></script>
 </body>
 </html>
