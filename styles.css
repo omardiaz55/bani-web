@@ -1,7 +1,11 @@
 body {
-  min-height: 100vh; /* 100% de la altura visible */
+  font-family: 'Open Sans', 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #222;
+  background-color: #fff;
   margin: 0;
-  font-family: Roboto;
+  padding: 0;
 }
 /* Estilo general */
 .navbar {
@@ -159,32 +163,31 @@ body {
     margin-right: 2%;
   }
 }
-.noticias {
-  background-color: #f5f5f5;
-}
-.loteria {
-    text-align: center;
-    padding: 20px;
-}
-.noticias {
-    text-align: center;
-    background-color: rgb(199, 199, 199);
-    padding: 20px;
-}
 .enlaces {
     text-align: center;
 }
 .contenido-paginas {
-  margin: 50px 300px 50px 300px;
+  max-width: 760px;
+  margin: auto;
+  padding: 20px;
 }
-.contenido-paginas h1, h2, p {
+.contenido-paginas h1, h2 {
   text-align: center;
   font-family:'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 700;
+}
+.contenido-paginas h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 .contenido-paginas h2 {
   text-align: left;
+  font-size: 1.5rem;
+  margin-top: 30px;
+  margin-bottom: 10px;
 }
 .contenido-paginas p {
+  font-size: 1rem;
   text-align: justify;
 }
 #ubicacion {
