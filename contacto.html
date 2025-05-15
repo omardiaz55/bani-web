@@ -14,47 +14,49 @@
 
   </head>
 <body>
-    <nav class="navbar">
-        <a href="index.html" style="text-decoration: none;"><div class="navbar-logo">Mi Baní</div></a>
+    
+  <nav class="navbar">
+    <a href="index.html" style="text-decoration: none;"><div class="navbar-logo">Mi Baní</div></a>
       
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
       
-        <ul class="navbar-links" id="navbarLinks">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="index.html#categorias">Categorías</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-        </ul>
-      </nav>
-    <div class="contenido-paginas" id="top">
-        <h2>Contáctanos</h2>
-        <p>¿Tienes preguntas, sugerencias o deseas colaborar? Escríbenos, estamos para escucharte.</p>
-      
-        <form action="mailto:tucorreo@ejemplo.com" method="post" enctype="text/plain">
-          <label for="nombre">Nombre:</label><br>
-          <input type="text" id="nombre" name="nombre" required><br><br>
-      
-          <label for="email">Correo electrónico:</label><br>
-          <input type="email" id="email" name="email" required><br><br>
-      
-          <label for="mensaje">Mensaje:</label><br>
-          <textarea id="mensaje" name="mensaje" rows="6" required></textarea><br><br>
-      
-          <input type="submit" value="Enviar">
-        </form>
-      
-        <h3>También puedes escribirnos a:</h3>
-        <p>Email: <a href="mailto:omardiaz55@gmail.com">omardiaz55@gmail.com</a></p>
-      
-        <h3>Síguenos:</h3>
-        <ul>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Instagram</a></li>
-        </ul>
-    </div>
-    <footer>
-        <p>&copy; 2025 Mi Baní. Todos los derechos reservados.</p>
-    </footer>
-    <script src="script.js"></script>
+    <ul class="navbar-links" id="navbarLinks">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="index.html#categorias">Categorías</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
+    
+  <section id="contacto" class="contenido-paginas">
+    <h1>Contáctanos</h1>
+    <p>¿Tienes preguntas, sugerencias o deseas colaborar con <strong>Mi Baní</strong>? ¡Estamos encantados de escucharte!</p>
+  
+    <form class="form-contacto" action="https://formsubmit.co/tu-correo@ejemplo.com" method="POST">
+      <!-- Configuraciones opcionales -->
+      <input type="hidden" name="_captcha" value="false"> <!-- Desactiva captcha -->
+  
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" name="nombre" required>
+  
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" name="email" required>
+  
+      <label for="mensaje">Mensaje</label>
+      <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+  
+      <button type="submit">Enviar mensaje</button>
+    </form>
+  
+    <p style="text-align:center; margin-top: 2rem;">
+      También puedes escribirnos a <a href="mailto:omardiaz55@gmail.com">omardiaz55@gmail.com</a>
+    </p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Mi Baní. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="script.js"></script>
 
 </body>
 </html>
