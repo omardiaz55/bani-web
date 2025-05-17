@@ -213,6 +213,7 @@ body {
 .contenido-paginas p {
   font-size: 1rem;
   text-align: justify;
+  font-size: 18px;
 }
 
 .section-image {
