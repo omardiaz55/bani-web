@@ -149,6 +149,94 @@ body {
   text-decoration: none;
 }
 
+/* HERO EXCLUSIVO PARA LA PÁGINA DE HISTORIA */
+.hero-historia {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  background-image: url('imagenes/Siglo-XX-Catedral-Bani-Historia.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+/* HERO reutilizable para cualquier sección */
+.hero-seccion {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.hero-seccion::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45); /* capa oscura */
+  z-index: 1;
+}
+
+.hero-seccion .hero-overlay {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+}
+
+.hero-seccion h1 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.hero-seccion p {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+/* Responsive: tablet y móviles */
+@media (max-width: 768px) {
+  .hero-seccion {
+    height: 40vh;
+  }
+
+  .hero-seccion h1 {
+    font-size: 2rem;
+  }
+
+  .hero-seccion p {
+    font-size: 1rem;
+  }
+}
+
+/* Responsive: móviles pequeños */
+@media (max-width: 480px) {
+  .hero-seccion {
+    height: 35vh;
+  }
+
+  .hero-seccion h1 {
+    font-size: 1.5rem;
+  }
+
+  .hero-seccion p {
+    font-size: 0.95rem;
+  }
+}
+
 .tarjeta {
   width: 300px;
   flex: 0 0 300px; /* Fija el ancho */

@@ -11,6 +11,65 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+      /* HERO EXCLUSIVO PARA LA PÁGINA DE HISTORIA */
+.hero-historia {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  background-image: url('imagenes/Siglo-XX-Catedral-Bani-Historia.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.hero-historia::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45); /* Mejora legibilidad del texto */
+  z-index: 1;
+}
+
+.hero-historia .hero-overlay {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+}
+
+.hero-historia h1 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.hero-historia p {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .hero-historia {
+    height: 40vh;
+  }
+
+  .hero-historia h1 {
+    font-size: 2rem;
+  }
+
+  .hero-historia p {
+    font-size: 1rem;
+  }
+}
+    </style>
 </head>
 <body>
     <nav class="navbar" id="top">
@@ -24,6 +83,15 @@
           <li><a href="contacto.html">Contacto</a></li>
         </ul>
       </nav>
+
+      <section class="hero-historia">
+        <div class="hero-overlay">
+          <h1>Historia de Baní</h1>
+          <p>Descubre los orígenes de nuestra ciudad y su evolución desde 1764.</p>
+        </div>
+      </section>
+
+
     <div class="contenido-paginas">
       <section id="historia">
         <h1>Historia de Baní</h1>
