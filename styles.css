@@ -149,22 +149,6 @@ body {
   text-decoration: none;
 }
 
-/* HERO EXCLUSIVO PARA LA PÁGINA DE HISTORIA */
-.hero-historia {
-  position: relative;
-  width: 100%;
-  height: 60vh;
-  background-image: url('imagenes/Siglo-XX-Catedral-Bani-Historia.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-align: center;
-}
-
 /* HERO reutilizable para cualquier sección */
 .hero-seccion {
   position: relative;
@@ -200,11 +184,6 @@ body {
 .hero-seccion h1 {
   font-size: 3rem;
   margin: 0;
-}
-
-.hero-seccion p {
-  font-size: 1.2rem;
-  margin-top: 0.5rem;
 }
 
 /* Responsive: tablet y móviles */
