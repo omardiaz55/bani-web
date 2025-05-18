@@ -1,11 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gracias</title>
+  <title>Gracias por tu mensaje | Mi Baní</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="imagenes/favicon_io/favicon.ico" type="image/x-icon">
 </head>
 <body>
-  <h1>Gracias</h1>
+
+  <nav class="navbar">
+    <a href="index.html" style="text-decoration: none;"><div class="navbar-logo">Mi Baní</div></a>
+      
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      
+    <ul class="navbar-links" id="navbarLinks">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="index.html#categorias">Categorías</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero-seccion" style="background-image: url('imagenes/gracias-img.jpg');">
+    <div class="hero-overlay">
+      <h1>¡Gracias por tu mensaje!</h1>
+    </div>
+  </section>
+
+  <div class="contenido-paginas" style="text-align: center; padding: 2rem;">
+    <p>Hemos recibido tu mensaje y nos pondremos en contacto pronto.</p>
+
+    <p>Mientras tanto, puedes volver a la <a href="index.html">página principal</a> o seguir explorando nuestras secciones.</p>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Mi Baní. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
