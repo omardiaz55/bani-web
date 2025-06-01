@@ -43,17 +43,33 @@
         <link rel="icon" href="imagenes/favicon_io/favicon.ico" type="image/x-icon">
     </head>
 <body>
-    <nav class="navbar" id="top">
-        <a href="index.html" style="text-decoration: none;"><div class="navbar-logo">Mi Baní</div></a>
-      
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-      
-        <ul class="navbar-links" id="navbarLinks">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="index.html#categorias">Categorías</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
+  <nav class="navbar" id="top">
+    <a href="index.html" style="text-decoration: none;">
+      <div class="navbar-logo">Mi Baní</div>
+    </a>
+  
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  
+    <ul class="navbar-links" id="navbarLinks">
+      <li><a href="index.html">Inicio</a></li>
+  
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">Categorías ▼</a>
+        <ul class="submenu">
+          <li><a href="historia.html" onclick="closeMenu()">Historia</a></li>
+          <li><a href="cultura.html" onclick="closeMenu()">Cultura y Tradiciones</a></li>
+          <li><a href="gastronomia.html" onclick="closeMenu()">Gastronomía</a></li>
+          <li><a href="lugares.html" onclick="closeMenu()">Lugares de Interés</a></li>
+          <li><a href="economia.html" onclick="closeMenu()">Economía y Comercio</a></li>
+          <li><a href="vida-nocturna.html" onclick="closeMenu()">Vida Nocturna</a></li>
+          <li><a href="clima-geografia.html" onclick="closeMenu()">Clima y Geografía</a></li>
+          <li><a href="mitos.html" onclick="closeMenu()">Mitos y Leyendas</a></li>
         </ul>
-      </nav>
+      </li>
+  
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
 
       <section class="hero-seccion" style="background-image: url('imagenes/economia-card.jpg');">
         <div class="hero-overlay">
@@ -77,8 +93,12 @@
         
         <h2>Industria</h2>
         <p>La industria en Baní, aunque no es su principal motor económico, ha crecido de manera constante en sectores clave como la agroindustria, la construcción y la manufactura. La producción y procesamiento de alimentos, en especial productos derivados del mango y el café, han permitido la expansión de fábricas y pequeñas empresas que exportan a mercados nacionales e internacionales. La industria de la construcción también ha experimentado un auge, con el desarrollo de nuevos proyectos habitacionales y comerciales que reflejan el crecimiento de la ciudad. Además, la fabricación de materiales de construcción, textiles y productos artesanales contribuye a la generación de empleos y al fortalecimiento del comercio local. Con su ubicación estratégica y su espíritu emprendedor, Baní continúa diversificando su sector industrial para impulsar el desarrollo económico de la región.</p>
-        
-        <button id="backToTop" aria-label="Volver arriba">↑</button>
+
+        <button id="backToTop" aria-label="Volver arriba">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24" fill="white">
+            <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
+          </svg>
+        </button>
 
         <div class="section-nav">
             <a href="lugares.html" class="prev-section">← Anterior</a>

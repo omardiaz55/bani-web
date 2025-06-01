@@ -18,39 +18,41 @@ body {
   overflow-x: hidden; /* previene scroll horizontal */
 }
 /* Estilo general */
+/* Estilo base barra de navegación */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background-color: white;
+  background-color: #ffffff;
   z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
   padding: 0 1.5rem;
-  color: white;
   flex-wrap: wrap;
   box-sizing: border-box;
 }
+
 .navbar-logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color:black;
+  color: black;
 }
-/* Links del menú */
+
 .navbar-links {
   display: flex;
   list-style: none;
   gap: 20px;
 }
+
 .navbar-links a {
   text-decoration: none;
   color: black;
   padding: 0 1rem;
 }
-/* Botón hamburguesa oculto en escritorio */
+
+/* Botón hamburguesa */
 .menu-toggle {
   display: none;
   font-size: 1.5rem;
@@ -59,7 +61,48 @@ body {
   color: black;
   cursor: pointer;
 }
-/* Estilo responsive para móviles */
+
+/* Submenú */
+.dropdown {
+  position: relative;
+}
+
+.submenu {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #444;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.submenu li a {
+  display: block;
+  padding: 10px 20px;
+  color: white;
+  text-decoration: none;
+}
+
+.submenu li a:hover {
+  background-color: #666;
+}
+
+/* Mostrar submenú en escritorio */
+@media (min-width: 769px) {
+  .dropdown:hover .submenu {
+    display: block;
+  }
+}
+
+/* Mostrar submenú en móviles cuando se abre por clic */
+.show-submenu .submenu {
+  display: block;
+}
+
 @media (max-width: 768px) {
   .navbar-links {
     display: none;
@@ -74,6 +117,10 @@ body {
 
   .menu-toggle {
     display: block;
+  }
+
+  .submenu {
+    position: static;
   }
 }
 .hero {
@@ -344,19 +391,27 @@ body {
   display: none;
   width: 48px;
   height: 48px;
-  background-color: #007BFF;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 50%;
-  font-size: 1.5rem;
   cursor: pointer;
   z-index: 1000;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease, opacity 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+#backToTop svg {
+  width: 24px;
+  height: 24px;
 }
 
 #backToTop:hover {
   background-color: #0056b3;
+  transform: translateY(-4px);
 }
 
 .form-contacto {

@@ -24,17 +24,33 @@
 
 </head>
 <body>
-    <nav class="navbar" id="top">
-        <a href="index.html" style="text-decoration: none;"><div class="navbar-logo">Mi Baní</div></a>
-      
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-      
-        <ul class="navbar-links" id="navbarLinks">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="index.html#categorias">Categorías</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
+  <nav class="navbar" id="top">
+    <a href="index.html" style="text-decoration: none;">
+      <div class="navbar-logo">Mi Baní</div>
+    </a>
+  
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  
+    <ul class="navbar-links" id="navbarLinks">
+      <li><a href="index.html">Inicio</a></li>
+  
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">Categorías ▼</a>
+        <ul class="submenu">
+          <li><a href="historia.html" onclick="closeMenu()">Historia</a></li>
+          <li><a href="cultura.html" onclick="closeMenu()">Cultura y Tradiciones</a></li>
+          <li><a href="gastronomia.html" onclick="closeMenu()">Gastronomía</a></li>
+          <li><a href="lugares.html" onclick="closeMenu()">Lugares de Interés</a></li>
+          <li><a href="economia.html" onclick="closeMenu()">Economía y Comercio</a></li>
+          <li><a href="vida-nocturna.html" onclick="closeMenu()">Vida Nocturna</a></li>
+          <li><a href="clima-geografia.html" onclick="closeMenu()">Clima y Geografía</a></li>
+          <li><a href="mitos.html" onclick="closeMenu()">Mitos y Leyendas</a></li>
         </ul>
-      </nav>
+      </li>
+  
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
 
       <section class="hero-seccion" style="background-image: url('imagenes/clima-card.jpeg');">
         <div class="hero-overlay">
@@ -98,8 +114,12 @@
           </p>
         </section>
     
-        <button id="backToTop" aria-label="Volver arriba">↑</button>
-
+        <button id="backToTop" aria-label="Volver arriba">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24" fill="white">
+            <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
+          </svg>
+        </button>
+        
         <div class="section-nav">
             <a href="vida-nocturna.html" class="prev-section">← Anterior</a>
             <a href="mitos.html" class="next-section">Siguiente →</a>
