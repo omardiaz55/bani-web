@@ -97,7 +97,32 @@
           </p>
         </div>
       </section>
-        
+      
+	<section id="noticias-bani" style="padding: 2rem; background: #f5f5f5;">
+  <h2 style="text-align: center;">📰 Noticias destacadas de Baní</h2>
+  <ul id="lista-noticias" style="list-style: none; padding: 0; max-width: 800px; margin: 1rem auto;">
+    <li>Cargando noticias...</li>
+  </ul>
+</section>
+
+<script>
+  fetch('noticias.json')
+    .then(res => res.json())
+    .then(data => {
+      const contenedor = document.getElementById('lista-noticias');
+      contenedor.innerHTML = '';
+
+      data.forEach(noticia => {
+        const item = document.createElement('li');
+        item.style.marginBottom = '1rem';
+        item.innerHTML = `<a href="${noticia.link}" target="_blank" style="font-weight: bold; color: #2a5dab;">${noticia.titulo}</a>`;
+        contenedor.appendChild(item);
+      });
+    })
+    .catch(() => {
+      document.getElementById('lista-noticias').innerHTML = '<li>No se pudieron cargar las noticias.</li>';
+    });
+</script>  
       <section class="categorias" id="categorias">
         
         <a href="historia.html"><div class="tarjeta">
