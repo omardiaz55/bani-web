@@ -216,3 +216,5 @@ async function enviarDiscordMensaje() {
     console.error("❌ Error enviando a Discord:", error.response?.status, error.response?.data);
   }
 }
+
+
