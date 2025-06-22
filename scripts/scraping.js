@@ -189,40 +189,20 @@ async function scrapePrensaLatina() {
   const seleccionadas = filtrarYFormatear(todas);
   fs.writeFileSync('noticias.json', JSON.stringify(seleccionadas, null, 2));
   console.log(`✅ ${seleccionadas.length} noticias guardadas en noticias.json`);
+
+  await enviarDiscordMensaje();
 })();
 
-const https = require('https');
-
-function enviarDiscordMensaje() {
-  const data = JSON.stringify({ content: "✅ mibani.net: Noticias actualizadas automáticamente." });
-  const webhookUrl = "https://discord.com/api/webhooks/1386140245870907403/mc5-h1hdEZVHKvzyCQnxh6lLNpWbQjRHfCWZYDqIxSjZMuhwOHGm9ByLxXd690fJh8yo";
-  const url = new URL(webhookUrl);
-
-  const options = {
-    hostname: url.hostname,
-    path: url.pathname + url.search,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': data.length,
-    }
-  };
-
-  const req = https.request(options, res => {
-    if (res.statusCode === 204) {
-      console.log("✅ Notificación enviada a Discord.");
-    } else {
-      console.error("❌ Error enviando a Discord:", res.statusCode);
-    }
-  });
-
-  req.on('error', error => {
-    console.error("❌ Error de conexión con Discord:", error);
-  });
-
-  req.write(data);
-  req.end();
+async function enviarDiscordMensaje() {
+  try {
+    await axios.post(
+      "https://discord.com/api/webhooks/1386140245870907403/mc5-h1hdEZVHKvzyCQnxh6lLNpWbQjRHfCWZYDqIxSjZMuhwOHGm9ByLxXd690fJh8yo",
+      {
+        content: "✅ mibani.net: Noticias actualizadas automáticamente."
+      }
+    );
+    console.log("✅ Notificación enviada a Discord.");
+  } catch (error) {
+    console.error("❌ Error enviando a Discord:", error.response?.status, error.response?.data);
+  }
 }
-
-// Llamar después de completar scraping y guardar noticias.json
-enviarDiscordMensaje();
