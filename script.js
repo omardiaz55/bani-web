@@ -77,7 +77,7 @@ fetch(`noticias.json?t=${new Date().getTime()}`)
           <a href="${noticia.link}" target="_blank" style="font-weight: bold; color: #2a5dab;">
             ${noticia.titulo}
           </a><br>
-          <small style="color: gray;">${noticia.fuente} &nbsp;|&nbsp; 📅 ${noticia.fecha}</small>
+          <small style="color: gray;">${noticia.fuente} &nbsp;|&nbsp; ${noticia.fecha}</small>
         </div>
       `;
       contenedor.appendChild(item);
