@@ -26,7 +26,7 @@ async function scrapeNotisurBani() {
       const titulo = $(el).text().trim();
       const link = $(el).attr('href');
       if (titulo.toLowerCase().includes('baní')) {
-        noticias.push({ fuente: 'Notisur Baní', titulo, link, resumen: '' });
+        noticias.push({ fuente: 'Notisur Baní', titulo, link, resumen: '', fecha: hoy });
       }
     });
   } catch (e) {
@@ -46,7 +46,7 @@ async function scrapeElPoderBanilejo() {
       const titulo = $(el).text().trim();
       const link = $(el).attr('href');
       if (titulo.toLowerCase().includes('baní')) {
-        noticias.push({ fuente: 'El Poder Banilejo', titulo, link, resumen: '' });
+        noticias.push({ fuente: 'El Poder Banilejo', titulo, link, resumen: '', fecha: hoy });
       }
     });
   } catch (e) {
@@ -65,7 +65,7 @@ async function scrapeCDN() {
     $('article .entry-title a').each((i, el) => {
       const titulo = $(el).text().trim();
       const link = $(el).attr('href');
-      noticias.push({ fuente: 'CDN', titulo, link, resumen: '' });
+      noticias.push({ fuente: 'CDN', titulo, link, resumen: '', fecha: hoy });
     });
   } catch (e) {
     console.error('❌ CDN:', e.message);
@@ -84,7 +84,7 @@ async function scrapePeraviaVision() {
       const titulo = $(el).text().trim();
       const link = $(el).attr('href');
       if (titulo.toLowerCase().includes('baní')) {
-        noticias.push({ fuente: 'Peravia Vision', titulo, link, resumen: '' });
+        noticias.push({ fuente: 'Peravia Vision', titulo, link, resumen: '', fecha: hoy });
       }
     });
   } catch (e) {
@@ -104,7 +104,7 @@ async function scrapeListinDiario() {
       const titulo = $(el).text().trim();
       const link = $(el).attr('href');
       if ((titulo.toLowerCase().includes('baní') || titulo.toLowerCase().includes('peravia')) && link.startsWith('https://listindiario.com')) {
-        noticias.push({ fuente: 'Listín Diario', titulo, link, resumen: '' });
+        noticias.push({ fuente: 'Listín Diario', titulo, link, resumen: '', fecha: hoy });
       }
     });
   } catch (e) {
@@ -124,7 +124,7 @@ async function scrapeDominicanToday() {
       const titulo = $(el).text().trim();
       const link = $(el).attr('href');
       if ((titulo.toLowerCase().includes('baní') || titulo.toLowerCase().includes('peravia')) && link.startsWith('https://dominicantoday.com')) {
-        noticias.push({ fuente: 'Dominican Today', titulo, link, resumen: '' });
+        noticias.push({ fuente: 'Dominican Today', titulo, link, resumen: '', fecha: hoy });
       }
     });
   } catch (e) {
@@ -145,13 +145,13 @@ async function scrapeDiarioLibre() {
       const titulo = $(el).text().trim();
       const link = $(el).attr('href');
 
-      // Filtrar si menciona Baní o Peravia y link comienza con /
       if ((titulo.toLowerCase().includes('baní') || titulo.toLowerCase().includes('peravia')) && link && link.startsWith('/')) {
         noticias.push({
           fuente: 'Diario Libre',
           titulo,
           link: `https://www.diariolibre.com${link}`,
-          resumen: ''
+          resumen: '',
+          fecha: hoy
         });
       }
     });
@@ -172,7 +172,7 @@ async function scrapePrensaLatina() {
       const titulo = $(el).text().trim();
       const link = $(el).attr('href');
       if ((titulo.toLowerCase().includes('baní') || titulo.toLowerCase().includes('peravia')) && link.startsWith('http')) {
-        noticias.push({ fuente: 'Prensa Latina', titulo, link, resumen: '' });
+        noticias.push({ fuente: 'Prensa Latina', titulo, link, resumen: '', fecha: hoy });
       }
     });
   } catch (e) {
@@ -216,5 +216,3 @@ async function enviarDiscordMensaje() {
     console.error("❌ Error enviando a Discord:", error.response?.status, error.response?.data);
   }
 }
-
-
