@@ -490,10 +490,85 @@ body {
   background-color: #0056b3;
 }
 
-footer {
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
   background-color: #222;
   color: #fff;
+  padding: 40px 20px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.footer-column h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column li {
+  margin-bottom: 8px;
+}
+
+.footer-column a {
+  color: #87cefa;
+  text-decoration: none;
+}
+
+.footer-column a:hover {
+  text-decoration: underline;
+}
+
+.social-icons a {
+  font-size: 20px;
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+.newsletter-form {
+  margin-top: 10px;
+}
+
+.newsletter-form input[type="email"] {
+  padding: 5px;
+  width: 80%;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.newsletter-form button {
+  padding: 6px 12px;
+  background-color: #87cefa;
+  border: none;
+  color: #222;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.newsletter-form button:hover {
+  background-color: #5fb5e7;
+}
+
+.footer-bottom {
+  background-color: #111;
+  color: #eee;
   text-align: center;
   padding: 15px 10px;
-  font-size: 14px;
+  font-size: 13px;
+}
+
+.footer-bottom a {
+  color: #87cefa;
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
 }
