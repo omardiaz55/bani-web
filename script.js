@@ -62,6 +62,7 @@ document.addEventListener('click', function (event) {
   }
 });
 
+// 🔄 Carga dinámica de noticias con título, fuente y fecha
 fetch(`noticias.json?t=${new Date().getTime()}`)
   .then(res => res.json())
   .then(data => {
@@ -72,9 +73,13 @@ fetch(`noticias.json?t=${new Date().getTime()}`)
       const item = document.createElement('li');
       item.style.marginBottom = '1rem';
       item.innerHTML = `
-        <a href="${noticia.link}" target="_blank" style="font-weight: bold; color: #2a5dab;">
-          ${noticia.titulo}</a><br>
-        <small>${noticia.fuente}</small>`;
+        <div>
+          <a href="${noticia.link}" target="_blank" style="font-weight: bold; color: #2a5dab;">
+            ${noticia.titulo}
+          </a><br>
+          <small style="color: gray;">${noticia.fuente} &nbsp;|&nbsp; 📅 ${noticia.fecha}</small>
+        </div>
+      `;
       contenedor.appendChild(item);
     });
   })
