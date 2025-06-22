@@ -133,17 +133,27 @@ async function scrapeDominicanToday() {
   return noticias;
 }
 
-// 7. Diario Libre
+// 7. Diario Libre (desde la portada)
 async function scrapeDiarioLibre() {
-  const url = 'https://www.diariolibre.com/tags/bani-peravia/';
+  const url = 'https://www.diariolibre.com';
   const noticias = [];
   try {
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
-    $('h2.titulo a, h3.titulo a').each((i, el) => {
+    
+    $('a').each((i, el) => {
       const titulo = $(el).text().trim();
       const link = $(el).attr('href');
-      if (titulo && link) noticias.push({ fuente: 'Diario Libre', titulo, link, resumen: 'Noticia de Diario Libre.' });
+
+      // Filtrar si menciona Baní o Peravia y link comienza con /
+      if ((titulo.toLowerCase().includes('baní') || titulo.toLowerCase().includes('peravia')) && link && link.startsWith('/')) {
+        noticias.push({
+          fuente: 'Diario Libre',
+          titulo,
+          link: `https://www.diariolibre.com${link}`,
+          resumen: ''
+        });
+      }
     });
   } catch (e) {
     console.error('❌ Diario Libre:', e.message);
