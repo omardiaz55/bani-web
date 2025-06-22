@@ -61,3 +61,23 @@ document.addEventListener('click', function (event) {
     document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show-submenu'));
   }
 });
+
+fetch(`noticias.json?t=${new Date().getTime()}`)
+  .then(res => res.json())
+  .then(data => {
+    const contenedor = document.getElementById('lista-noticias');
+    contenedor.innerHTML = '';
+
+    data.forEach(noticia => {
+      const item = document.createElement('li');
+      item.style.marginBottom = '1rem';
+      item.innerHTML = `
+        <a href="${noticia.link}" target="_blank" style="font-weight: bold; color: #2a5dab;">
+          ${noticia.titulo}</a><br>
+        <small>${noticia.fuente}</small>`;
+      contenedor.appendChild(item);
+    });
+  })
+  .catch(() => {
+    document.getElementById('lista-noticias').innerHTML = '<li>No se pudieron cargar las noticias.</li>';
+  });
