@@ -86,3 +86,36 @@ fetch(`noticias.json?t=${new Date().getTime()}`)
   .catch(() => {
     document.getElementById('lista-noticias').innerHTML = '<li>No se pudieron cargar las noticias.</li>';
   });
+
+// Cargar y mostrar noticias con resumen
+document.addEventListener('DOMContentLoaded', () => {
+  const contenedor = document.getElementById('lista-noticias');
+
+  fetch('noticias.json')
+    .then(res => res.json())
+    .then(noticias => {
+      if (!noticias.length) {
+        contenedor.innerHTML = '<li>No se encontraron noticias recientes.</li>';
+        return;
+      }
+
+      contenedor.innerHTML = ''; // Limpia contenido anterior
+
+      noticias.forEach(noticia => {
+        const item = document.createElement('li');
+
+        item.innerHTML = `
+          <a href="${noticia.link}" target="_blank" rel="noopener">
+            ${noticia.titulo}
+          </a><br>
+          <small><strong>${noticia.fuente}</strong> &bull; ${noticia.fecha}</small>
+          <p>${noticia.resumen || ''}</p>
+        `;
+
+        contenedor.appendChild(item);
+      });
+    })
+    .catch(() => {
+      contenedor.innerHTML = '<li>No se pudieron cargar las noticias.</li>';
+    });
+});
