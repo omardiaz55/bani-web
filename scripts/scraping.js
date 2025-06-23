@@ -1,4 +1,3 @@
-// scripts/scraping.js
 const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
@@ -15,7 +14,8 @@ const filtrarYFormatear = (noticias) => {
   return Array.from(unicas.values()).slice(0, 5);
 };
 
-// 1. Notisur Baní
+// Scrapers...
+
 async function scrapeNotisurBani() {
   const url = 'https://www.notisurbani.com';
   const noticias = [];
@@ -35,7 +35,6 @@ async function scrapeNotisurBani() {
   return noticias;
 }
 
-// 2. El Poder Banilejo
 async function scrapeElPoderBanilejo() {
   const url = 'https://elpoderbanilejo.com';
   const noticias = [];
@@ -55,7 +54,6 @@ async function scrapeElPoderBanilejo() {
   return noticias;
 }
 
-// 3. CDN Baní
 async function scrapeCDN() {
   const url = 'https://cdn.com.do/temas/bani/';
   const noticias = [];
@@ -73,7 +71,6 @@ async function scrapeCDN() {
   return noticias;
 }
 
-// 4. Peravia Vision
 async function scrapePeraviaVision() {
   const url = 'https://peraviavision.tv';
   const noticias = [];
@@ -93,7 +90,6 @@ async function scrapePeraviaVision() {
   return noticias;
 }
 
-// 5. Listín Diario
 async function scrapeListinDiario() {
   const url = 'https://listindiario.com';
   const noticias = [];
@@ -113,7 +109,6 @@ async function scrapeListinDiario() {
   return noticias;
 }
 
-// 6. Dominican Today
 async function scrapeDominicanToday() {
   const url = 'https://dominicantoday.com';
   const noticias = [];
@@ -133,7 +128,6 @@ async function scrapeDominicanToday() {
   return noticias;
 }
 
-// 7. Diario Libre (desde la portada)
 async function scrapeDiarioLibre() {
   const url = 'https://www.diariolibre.com';
   const noticias = [];
@@ -144,7 +138,6 @@ async function scrapeDiarioLibre() {
     $('a').each((i, el) => {
       const titulo = $(el).text().trim();
       const link = $(el).attr('href');
-
       if ((titulo.toLowerCase().includes('baní') || titulo.toLowerCase().includes('peravia')) && link && link.startsWith('/')) {
         noticias.push({
           fuente: 'Diario Libre',
@@ -161,7 +154,6 @@ async function scrapeDiarioLibre() {
   return noticias;
 }
 
-// 8. Prensa Latina
 async function scrapePrensaLatina() {
   const url = 'https://www.prensa-latina.cu/etiqueta/bani/';
   const noticias = [];
@@ -181,7 +173,7 @@ async function scrapePrensaLatina() {
   return noticias;
 }
 
-// Ejecutar todas
+// Ejecutar todo
 (async () => {
   console.log('🔍 Buscando noticias sobre Baní...');
   const resultados = await Promise.all([
@@ -199,20 +191,4 @@ async function scrapePrensaLatina() {
   const seleccionadas = filtrarYFormatear(todas);
   fs.writeFileSync('noticias.json', JSON.stringify(seleccionadas, null, 2));
   console.log(`✅ ${seleccionadas.length} noticias guardadas en noticias.json`);
-
-  await enviarDiscordMensaje();
 })();
-
-async function enviarDiscordMensaje() {
-  try {
-    await axios.post(
-      "https://discord.com/api/webhooks/1386140245870907403/mc5-h1hdEZVHKvzyCQnxh6lLNpWbQjRHfCWZYDqIxSjZMuhwOHGm9ByLxXd690fJh8yo",
-      {
-        content: "✅ mibani.net: Noticias actualizadas automáticamente."
-      }
-    );
-    console.log("✅ Notificación enviada a Discord.");
-  } catch (error) {
-    console.error("❌ Error enviando a Discord:", error.response?.status, error.response?.data);
-  }
-}

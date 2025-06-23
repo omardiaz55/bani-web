@@ -362,6 +362,10 @@ body {
 }
 
 #ubicacion {
+  background-color: #f0f0f0;  
+}
+
+#ubicacion .contenido {
   display: flex;
   flex-wrap: wrap;
   gap: 60px;
@@ -371,6 +375,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   box-sizing: border-box;
+  
 }
 
 .ubicacion-texto,
@@ -378,6 +383,7 @@ body {
   flex: 1 1 400px;
   max-width: 600px;
   box-sizing: border-box;
+  
 }
 
 .ubicacion-texto p {
