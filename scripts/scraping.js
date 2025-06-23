@@ -24,6 +24,21 @@ async function fetchConReintentos(url, intentos = 3) {
   }
 }
 
+async function extraerResumen(link) {
+  try {
+    const { data } = await fetchConReintentos(link, 2);
+    const $ = cheerio.load(data);
+
+    const parrafos = $('p').map((i, el) => $(el).text().trim()).get();
+    const resumen = parrafos.find(p => p.length > 60); // Omitir textos muy cortos
+
+    return resumen || '';
+  } catch (e) {
+    console.warn(`⚠️ No se pudo extraer resumen de: ${link}`);
+    return '';
+  }
+}
+
 async function scrapearFuente(fuente) {
   const noticias = [];
   try {
@@ -45,7 +60,7 @@ async function scrapearFuente(fuente) {
           fuente: fuente.nombre,
           titulo,
           link,
-          resumen: '', // Puedes extraer resumen más adelante
+          resumen: null, // Se agregará más tarde
           fecha: hoy
         });
       }
@@ -70,12 +85,20 @@ function filtrarYFormatear(noticias) {
   return Array.from(unicas.values()).slice(0, 5);
 }
 
+async function agregarResumenes(noticias) {
+  for (const noticia of noticias) {
+    console.log(`🧠 Generando resumen: ${noticia.titulo}`);
+    noticia.resumen = await extraerResumen(noticia.link);
+  }
+}
+
 (async () => {
   console.log('🔍 Buscando noticias sobre Baní...\n');
 
   const resultados = await Promise.all(fuentes.map(fuente => scrapearFuente(fuente)));
   const todas = resultados.flat();
   const seleccionadas = filtrarYFormatear(todas);
+  await agregarResumenes(seleccionadas);
 
   fs.writeFileSync('noticias.json', JSON.stringify(seleccionadas, null, 2));
   console.log(`\n📝 ${seleccionadas.length} noticias guardadas en noticias.json`);
