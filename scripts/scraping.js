@@ -76,13 +76,15 @@ async function scrapearFuente(fuente) {
 
 function filtrarYFormatear(noticias) {
   const unicas = new Map();
+
   noticias.forEach(n => {
     const clave = normalizar(n.titulo);
     if (!unicas.has(clave)) {
       unicas.set(clave, n);
     }
   });
-  return Array.from(unicas.values()).slice(0, 5);
+
+  return Array.from(unicas.values());
 }
 
 async function agregarResumenes(noticias) {
