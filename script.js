@@ -1,6 +1,5 @@
 const backToTopButton = document.getElementById('backToTop');
 
-// Mostrar u ocultar el botón al cargar la página
 window.addEventListener('load', () => {
   const scrollY = window.scrollY || document.documentElement.scrollTop;
   backToTopButton.style.display = scrollY > 300 ? 'block' : 'none';
@@ -17,12 +16,9 @@ function toggleDropdown(event) {
   dropdown.classList.toggle('show-submenu');
 }
 
-// Cierra menú y submenú en móviles al hacer clic en cualquier enlace
 function closeMenu() {
   const nav = document.getElementById('navbarLinks');
   nav.classList.remove('active');
-
-  // Cierra submenú si está abierto
   const dropdowns = document.querySelectorAll('.dropdown');
   dropdowns.forEach(d => d.classList.remove('show-submenu'));
 }
@@ -34,6 +30,14 @@ document.addEventListener('click', function (event) {
       dropdown.classList.remove('show-submenu');
     });
   }
+
+  const nav = document.getElementById('navbarLinks');
+  const menuToggle = document.querySelector('.menu-toggle');
+  const clickedInsideMenu = nav.contains(event.target) || menuToggle.contains(event.target);
+  if (!clickedInsideMenu) {
+    nav.classList.remove('active');
+    document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show-submenu'));
+  }
 });
 
 backToTopButton.addEventListener('click', () => {
@@ -42,54 +46,13 @@ backToTopButton.addEventListener('click', () => {
 
 window.addEventListener('scroll', () => {
   const scrollY = window.scrollY || document.documentElement.scrollTop;
-  if (scrollY > 300) {
-    backToTopButton.style.display = 'block';
-  } else {
-    backToTopButton.style.display = 'none';
-  }
+  backToTopButton.style.display = scrollY > 300 ? 'block' : 'none';
 });
 
-document.addEventListener('click', function (event) {
-  const nav = document.getElementById('navbarLinks');
-  const menuToggle = document.querySelector('.menu-toggle');
-  const clickedInsideMenu = nav.contains(event.target) || menuToggle.contains(event.target);
-
-  if (!clickedInsideMenu) {
-    nav.classList.remove('active');
-
-    // También cierra cualquier submenú abierto
-    document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show-submenu'));
-  }
-});
-
-// 🔄 Carga dinámica de noticias con título, fuente y fecha
-fetch(`noticias.json?t=${new Date().getTime()}`)
-  .then(res => res.json())
-  .then(data => {
-    const contenedor = document.getElementById('lista-noticias');
-    contenedor.innerHTML = '';
-
-    data.forEach(noticia => {
-      const item = document.createElement('li');
-      item.style.marginBottom = '1rem';
-      item.innerHTML = `
-        <div>
-          <a href="${noticia.link}" target="_blank" style="font-weight: bold; color: #2a5dab;">
-            ${noticia.titulo}
-          </a><br>
-          <small style="color: gray;">${noticia.fuente} &nbsp;|&nbsp; ${noticia.fecha}</small>
-        </div>
-      `;
-      contenedor.appendChild(item);
-    });
-  })
-  .catch(() => {
-    document.getElementById('lista-noticias').innerHTML = '<li>No se pudieron cargar las noticias.</li>';
-  });
-
-// Cargar y mostrar noticias con resumen
+// 🔄 Mostrar solo 5 noticias en index.html
 document.addEventListener('DOMContentLoaded', () => {
   const contenedor = document.getElementById('lista-noticias');
+  if (!contenedor) return;
 
   fetch('noticias.json')
     .then(res => res.json())
@@ -99,11 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      contenedor.innerHTML = ''; // Limpia contenido anterior
+      contenedor.innerHTML = '';
 
-      noticias.forEach(noticia => {
+      noticias.slice(0, 5).forEach(noticia => {
         const item = document.createElement('li');
-
         item.innerHTML = `
           <a href="${noticia.link}" target="_blank" rel="noopener">
             ${noticia.titulo}
@@ -111,9 +73,17 @@ document.addEventListener('DOMContentLoaded', () => {
           <small><strong>${noticia.fuente}</strong> &bull; ${noticia.fecha}</small>
           <p>${noticia.resumen || ''}</p>
         `;
-
         contenedor.appendChild(item);
       });
+
+      const verMas = document.createElement('div');
+      verMas.style.textAlign = 'center';
+      verMas.innerHTML = `
+        <a href="noticias.html" class="hero-btn" style="margin-top: 1rem; display: inline-block;">
+          Ver todas las noticias
+        </a>
+      `;
+      contenedor.parentElement.appendChild(verMas);
     })
     .catch(() => {
       contenedor.innerHTML = '<li>No se pudieron cargar las noticias.</li>';

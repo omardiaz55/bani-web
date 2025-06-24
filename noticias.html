@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Todas las noticias de Baní | Mi Baní</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-logo">Mi Baní</a>
+  </nav>
+
+  <section class="seccion-noticias">
+    <h2>Todas las noticias de Baní</h2>
+    <ul id="lista-noticias">
+      <li>Cargando noticias...</li>
+    </ul>
+  </section>
+
+  <script>
+    // Cargar y mostrar todas las noticias
+    document.addEventListener('DOMContentLoaded', () => {
+      const contenedor = document.getElementById('lista-noticias');
+
+      fetch('noticias.json')
+        .then(res => res.json())
+        .then(noticias => {
+          if (!noticias.length) {
+            contenedor.innerHTML = '<li>No se encontraron noticias.</li>';
+            return;
+          }
+
+          contenedor.innerHTML = '';
+          noticias.forEach(noticia => {
+            const item = document.createElement('li');
+            item.innerHTML = `
+              <a href="${noticia.link}" target="_blank" rel="noopener">
+                ${noticia.titulo}
+              </a><br>
+              <small><strong>${noticia.fuente}</strong> &bull; ${noticia.fecha}</small>
+              <p>${noticia.resumen || ''}</p>
+            `;
+            contenedor.appendChild(item);
+          });
+        })
+        .catch(() => {
+          contenedor.innerHTML = '<li>Error al cargar noticias.</li>';
+        });
+    });
+  </script>
+</body>
+</html>
