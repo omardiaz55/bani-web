@@ -1,5 +1,6 @@
 const backToTopButton = document.getElementById('backToTop');
 
+// Mostrar u ocultar el botón al cargar la página
 window.addEventListener('load', () => {
   const scrollY = window.scrollY || document.documentElement.scrollTop;
   backToTopButton.style.display = scrollY > 300 ? 'block' : 'none';
@@ -49,7 +50,7 @@ window.addEventListener('scroll', () => {
   backToTopButton.style.display = scrollY > 300 ? 'block' : 'none';
 });
 
-// 🔄 Mostrar solo 5 noticias en index.html
+// 🔄 Mostrar solo 5 noticias en index.html con fecha formateada
 document.addEventListener('DOMContentLoaded', () => {
   const contenedor = document.getElementById('lista-noticias');
   if (!contenedor) return;
@@ -66,12 +67,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
       noticias.slice(0, 5).forEach(noticia => {
         const item = document.createElement('li');
+
+        // Formatear la fecha
+        const fechaFormateada = noticia.fecha
+          ? new Date(noticia.fecha).toLocaleDateString('es-DO', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })
+          : 'Fecha desconocida';
+
         item.innerHTML = `
-          <a href="${noticia.link}" target="_blank" rel="noopener">
+          <a href="${noticia.link}" target="_blank" rel="noopener" style="font-weight: bold; color: #2a5dab;">
             ${noticia.titulo}
           </a><br>
-          <small><strong>${noticia.fuente}</strong> &bull; ${noticia.fecha}</small>
-          <p>${noticia.resumen || ''}</p>
+          <small style="color: #555;"><strong>${noticia.fuente || ''}</strong> • ${fechaFormateada}</small>
+          ${noticia.resumen ? `<p>${noticia.resumen}</p>` : ''}
         `;
         contenedor.appendChild(item);
       });
