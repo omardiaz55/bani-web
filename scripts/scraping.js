@@ -3,8 +3,6 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 const fuentes = require('./fuentes');
 
-const hoy = new Date().toISOString().split('T')[0];
-
 const normalizar = texto =>
   texto.toLowerCase().replace(/[^\w\s]/gi, '').replace(/\s+/g, ' ').trim();
 
@@ -30,12 +28,22 @@ async function extraerResumen(link) {
     const $ = cheerio.load(data);
 
     const parrafos = $('p').map((i, el) => $(el).text().trim()).get();
-    const resumen = parrafos.find(p => p.length > 60); // Omitir textos muy cortos
+    const resumen = parrafos.find(p => p.length > 60);
 
     return resumen || '';
   } catch (e) {
     console.warn(`⚠️ No se pudo extraer resumen de: ${link}`);
     return '';
+  }
+}
+
+async function obtenerFechaReal(fuente, link) {
+  try {
+    if (!fuente.obtenerFecha) return null;
+    const fecha = await fuente.obtenerFecha(link, fetchConReintentos);
+    return fecha || null;
+  } catch {
+    return null;
   }
 }
 
@@ -60,8 +68,8 @@ async function scrapearFuente(fuente) {
           fuente: fuente.nombre,
           titulo,
           link,
-          resumen: null, // Se agregará más tarde
-          fecha: hoy
+          resumen: null,
+          fecha: null, // Se actualizará luego
         });
       }
     });
@@ -87,11 +95,16 @@ function filtrarYFormatear(noticias) {
   return Array.from(unicas.values());
 }
 
-async function agregarResumenes(noticias) {
+async function agregarDatos(noticias) {
   for (const noticia of noticias) {
     console.log(`🧠 Generando resumen: ${noticia.titulo}`);
     noticia.resumen = await extraerResumen(noticia.link);
+    noticia.fecha = await obtenerFechaReal(fuentes.find(f => f.nombre === noticia.fuente), noticia.link) || new Date().toISOString().split('T')[0];
   }
+}
+
+function ordenarPorFecha(noticias) {
+  return noticias.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 }
 
 (async () => {
@@ -100,8 +113,9 @@ async function agregarResumenes(noticias) {
   const resultados = await Promise.all(fuentes.map(fuente => scrapearFuente(fuente)));
   const todas = resultados.flat();
   const seleccionadas = filtrarYFormatear(todas);
-  await agregarResumenes(seleccionadas);
+  await agregarDatos(seleccionadas);
+  const ordenadas = ordenarPorFecha(seleccionadas);
 
-  fs.writeFileSync('noticias.json', JSON.stringify(seleccionadas, null, 2));
-  console.log(`\n📝 ${seleccionadas.length} noticias guardadas en noticias.json`);
+  fs.writeFileSync('noticias.json', JSON.stringify(ordenadas, null, 2));
+  console.log(`\n📝 ${ordenadas.length} noticias guardadas en noticias.json`);
 })();
