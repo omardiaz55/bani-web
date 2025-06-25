@@ -4,7 +4,7 @@ const fs = require('fs');
 const fuentes = require('./fuentes');
 
 const normalizar = texto =>
-  texto.toLowerCase().replace(/[^\w\s]/gi, '').replace(/\s+/g, ' ').trim();
+  texto.toLowerCase().replace(/[^À-ſa-z0-9\s]/gi, '').replace(/\s+/g, ' ').trim();
 
 const axiosInstancia = axios.create({
   timeout: 10000,
@@ -69,7 +69,7 @@ async function scrapearFuente(fuente) {
           titulo,
           link,
           resumen: null,
-          fecha: null, // Se actualizará luego
+          fecha: null,
         });
       }
     });
