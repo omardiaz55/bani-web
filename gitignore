@@ -1,0 +1,5 @@
+# ignorar todos los archvios .log
+*.log
+
+#ignora este log
+debug-acento-https___acento.com.do_actualidad_solicitan-no-objecion-para-estacion-de-combustible-en-av-fabio-herrera-de-bani-9515759.html.html

@@ -311,5 +311,83 @@ module.exports = [
         return null;
       }
     },
+  },
+  {
+    nombre: 'Manaclar Televisión',
+    url: 'https://manaclartelevision.com/categorias/locales/',
+    obtenerEnlaces: async () => {
+      try {
+        const browser = await puppeteer.launch({ headless: true });
+        const page = await browser.newPage();
+        await page.goto('https://manaclartelevision.com/categorias/locales/', {
+          waitUntil: 'networkidle2',
+          timeout: 30000,
+        });
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Esperar carga dinámica
+        const enlaces = await page.evaluate(() => {
+          const articles = document.querySelectorAll('article, .post, .entry');
+          return Array.from(articles).map(article => {
+            const enlaceElement = article.querySelector('h2 a, h3 a, .post-title a, .entry-title a');
+            return enlaceElement ? enlaceElement.href : null;
+          }).filter(href => href);
+        });
+        await browser.close();
+        console.log(`✅ Manaclar Televisión: ${enlaces.length} noticias encontradas`);
+        return enlaces;
+      } catch (e) {
+        console.error(`❌ Error al obtener enlaces de Manaclar Televisión: ${e.message}`);
+        await browser.close().catch(() => {});
+        return [];
+      }
+    },
+    obtenerDatosNoticia: async (link) => {
+      try {
+        const browser = await puppeteer.launch({ headless: true });
+        const page = await browser.newPage();
+        await page.goto(link, { waitUntil: 'networkidle2', timeout: 30000 });
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        const datos = await page.evaluate(() => {
+          const titulo = document.querySelector('h1, .post-title, .entry-title')?.innerText.trim() || 'Sin título';
+          const resumenElement = document.querySelector('.post-excerpt, .entry-summary, .entry-content p, article p')?.innerText.trim();
+          const resumen = resumenElement ? resumenElement.split('.').slice(0, 2).join('.') + '.' : 'Sin resumen';
+          const fecha = document.querySelector('time.entry-date, .post-date, .published')?.getAttribute('datetime') ||
+                        document.querySelector('.post-date, .entry-date')?.innerText.trim() ||
+                        'Sin fecha';
+          return { titulo, resumen, fecha };
+        });
+        await browser.close();
+        return datos;
+      } catch (e) {
+        console.error(`❌ Error al obtener datos de ${link}: ${e.message}`);
+        await browser.close().catch(() => {});
+        return { titulo: 'Error', resumen: 'No se pudo obtener la noticia', fecha: new Date().toISOString().split('T')[0] };
+      }
+    },
+    obtenerFecha: async (link) => {
+      try {
+        const browser = await puppeteer.launch({ headless: true });
+        const page = await browser.newPage();
+        await page.goto(link, { waitUntil: 'networkidle2', timeout: 30000 });
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        const fecha = await page.evaluate(() => {
+          const fechaElement = document.querySelector('time.entry-date, .post-date, .published');
+          return fechaElement ? fechaElement.getAttribute('datetime') || fechaElement.innerText.trim() : 'Sin fecha';
+        });
+        await browser.close();
+        if (fecha && fecha.includes('T')) {
+          return fecha.split('T')[0];
+        }
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        await browser.close().catch(() => {});
+        return new Date().toISOString().split('T')[0];
+      }
+    }
   }
 ];
