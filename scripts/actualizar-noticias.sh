@@ -8,7 +8,7 @@ echo "🕓 [$(date)] Iniciando actualización automática de noticias" >> log_cr
 git rm --cached log_cron.txt >/dev/null 2>&1
 
 # 1. Obtener la última versión del repositorio
-git pull --rebase origin main >> log_cron.txt 2>&1
+git pull --rebase origin main 2>&1 | tee -a log_cron.txt
 
 # 2. Ejecutar scraping
 node scripts/scraping.js >> log_cron.txt 2>&1
@@ -25,3 +25,4 @@ else
 fi
 
 echo "🏁 [$(date)] Proceso finalizado" >> log_cron.txt
+echo "✅ Script finalizado. Revisa log_cron.txt para más detalles."
