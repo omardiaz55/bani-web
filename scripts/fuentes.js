@@ -5,32 +5,64 @@ module.exports = [
   {
     nombre: "Notisur Baní",
     url: "https://www.notisurbani.com",
-    selector: ".td-module-title a",
+    selector: ".td-module-title a, .entry-title a",
     base: "",
-    filtrar: t => t.toLowerCase().includes('baní'),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    filtrar: t => t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia'),
+    obtenerFecha: async (link, cheerio, fetchConReintentos, browser) => {
+      let page;
       try {
-        const { data } = await fetch(link);
-        const $ = cheerio.load(data);
-        return $('time.entry-date').first().attr('datetime') || null;
-      } catch {
-        return null;
+        page = await browser.newPage();
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+        await page.goto(link, { waitUntil: 'networkidle2', timeout: 60000 });
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const content = await page.content();
+        const $ = cheerio.load(content);
+        const fecha = $('time.entry-date').first().attr('datetime') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
+      } finally {
+        if (page) {
+          await page.close().catch(() => {});
+        }
       }
     },
   },
   {
     nombre: "El Poder Banilejo",
     url: "https://www.elpoderbanilejo.com/v6/",
-    selector: "h3.post-title a",
+    selector: "h3.post-title a, .entry-title a",
     base: "",
-    filtrar: t => t.toLowerCase().includes('baní'),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    filtrar: t => t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia'),
+    obtenerFecha: async (link, cheerio, fetchConReintentos, browser) => {
+      let page;
       try {
-        const { data } = await fetch(link);
-        const $ = cheerio.load(data);
-        return $('abbr.published').attr('title') || null;
-      } catch {
-        return null;
+        page = await browser.newPage();
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+        await page.goto(link, { waitUntil: 'networkidle2', timeout: 60000 });
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const content = await page.content();
+        const $ = cheerio.load(content);
+        const fecha = $('abbr.published').attr('title') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
+      } finally {
+        if (page) {
+          await page.close().catch(() => {});
+        }
       }
     },
   },
@@ -40,13 +72,20 @@ module.exports = [
     selector: "article .entry-title a",
     base: "",
     filtrar: () => true,
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
-        const { data } = await fetch(link);
+        const { data } = await fetchConReintentos(link);
         const $ = cheerio.load(data);
-        return $('meta[property="article:published_time"]').attr('content') || null;
-      } catch {
-        return null;
+        const fecha = $('meta[property="article:published_time"]').attr('content') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
       }
     },
   },
@@ -56,13 +95,20 @@ module.exports = [
     selector: "a",
     base: "https://listindiario.com",
     filtrar: (t, l) => (t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia')) && l.startsWith('https://listindiario.com'),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
-        const { data } = await fetch(link);
+        const { data } = await fetchConReintentos(link);
         const $ = cheerio.load(data);
-        return $('meta[property="article:published_time"]').attr('content') || null;
-      } catch {
-        return null;
+        const fecha = $('meta[property="article:published_time"]').attr('content') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
       }
     },
   },
@@ -71,8 +117,8 @@ module.exports = [
     url: "https://peraviavision.tv",
     selector: "a",
     base: "",
-    filtrar: t => t.toLowerCase().includes('baní'),
-    obtenerFecha: async (link, cheerio, fetch, browser) => {
+    filtrar: t => t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia'),
+    obtenerFecha: async (link, cheerio, fetchConReintentos, browser) => {
       let page;
       try {
         page = await browser.newPage();
@@ -122,13 +168,20 @@ module.exports = [
     selector: "a",
     base: "https://www.diariolibre.com",
     filtrar: (t, l) => (t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia')) && l && l.startsWith('/'),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
-        const { data } = await fetch(link);
+        const { data } = await fetchConReintentos(link);
         const $ = cheerio.load(data);
-        return $('time').attr('datetime') || null;
-      } catch {
-        return null;
+        const fecha = $('time').attr('datetime') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
       }
     },
   },
@@ -138,13 +191,20 @@ module.exports = [
     selector: "a",
     base: "https://dominicantoday.com",
     filtrar: (t, l) => (t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia')) && l.startsWith('https://dominicantoday.com'),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
-        const { data } = await fetch(link);
+        const { data } = await fetchConReintentos(link);
         const $ = cheerio.load(data);
-        return $('meta[property="article:published_time"]').attr('content') || null;
-      } catch {
-        return null;
+        const fecha = $('meta[property="article:published_time"]').attr('content') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
       }
     },
   },
@@ -154,7 +214,7 @@ module.exports = [
     selector: "article a",
     base: "https://acento.com.do",
     filtrar: (t, l) => (t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia')),
-    obtenerFecha: async (link, cheerio, fetch, browser) => {
+    obtenerFecha: async (link, cheerio, fetchConReintentos, browser) => {
       let page;
       try {
         page = await browser.newPage();
@@ -174,7 +234,6 @@ module.exports = [
         if (fecha && fecha.includes('T')) {
           fecha = fecha.split('T')[0];
         }
-
         const fechaParseada = new Date(fecha);
         if (isNaN(fechaParseada)) {
           console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
@@ -197,109 +256,158 @@ module.exports = [
     selector: "a",
     base: "https://hoy.com.do",
     filtrar: (t, l) => (t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia')) && l && l.startsWith('https://hoy.com.do'),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
-        const { data } = await fetch(link);
+        const { data } = await fetchConReintentos(link);
         const $ = cheerio.load(data);
-        return $('meta[property="article:published_time"]').attr('content') || null;
-      } catch {
-        return null;
+        const fecha = $('meta[property="article:published_time"]').attr('content') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
       }
     },
   },
   {
     nombre: "El Nacional",
     url: "https://elnacional.com.do/",
-    selector: "h2.title a",
+    selector: "h2.title a, .entry-title a",
     base: "https://elnacional.com.do",
     filtrar: (t, l) => (t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia')),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
-        const { data } = await fetch(link);
+        const { data } = await fetchConReintentos(link);
         const $ = cheerio.load(data);
-        return $('meta[property="article:published_time"]').attr('content') || null;
-      } catch {
-        return null;
+        const fecha = $('meta[property="article:published_time"]').attr('content') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
       }
     },
   },
   {
     nombre: "El Nuevo Diario",
     url: "https://elnuevodiario.com.do/",
-    selector: "h2.title a",
+    selector: "h2.title a, .entry-title a",
     base: "https://elnuevodiario.com.do",
     filtrar: (t, l) => (t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia')),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
-        const { data } = await fetch(link);
+        const { data } = await fetchConReintentos(link);
         const $ = cheerio.load(data);
-        return $('meta[property="article:published_time"]').attr('content') || null;
-      } catch {
-        return null;
+        const fecha = $('meta[property="article:published_time"]').attr('content') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
       }
     },
   },
   {
     nombre: "Noticias SIN",
     url: "https://noticiassin.com/",
-    selector: "article a",
+    selector: "article a, .entry-title a",
     base: "https://noticiassin.com",
     filtrar: (t, l) => (t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia')),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
-        const { data } = await fetch(link);
+        const { data } = await fetchConReintentos(link);
         const $ = cheerio.load(data);
-        return $('time').attr('datetime') || null;
-      } catch {
-        return null;
+        const fecha = $('time').attr('datetime') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
       }
     },
   },
   {
     nombre: "Al Momento",
     url: "https://almomento.net/categoria/mas-portada/",
-    selector: ".td-module-title a",
+    selector: ".td-module-title a, .entry-title a",
     base: "https://almomento.net",
     filtrar: (t, l) => (t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia')),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
-        const { data } = await fetch(link);
+        const { data } = await fetchConReintentos(link);
         const $ = cheerio.load(data);
-        return $('time.entry-date').attr('datetime') || null;
-      } catch {
-        return null;
+        const fecha = $('time.entry-date').attr('datetime') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
       }
     },
   },
   {
     nombre: "El Caribe",
     url: "https://www.elcaribe.com.do/panorama/pais/",
-    selector: "h2.title a",
+    selector: "h2.title a, .entry-title a",
     base: "https://www.elcaribe.com.do",
     filtrar: (t, l) => (t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia')),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
-        const { data } = await fetch(link);
+        const { data } = await fetchConReintentos(link);
         const $ = cheerio.load(data);
-        return $('meta[property="article:published_time"]').attr('content') || null;
-      } catch {
-        return null;
+        const fecha = $('meta[property="article:published_time"]').attr('content') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
       }
     },
   },
   {
     nombre: "De Último Minuto",
     url: "https://deultimominuto.net/",
-    selector: "h2.title a",
+    selector: "h2.title a, .entry-title a",
     base: "https://deultimominuto.net",
     filtrar: (t, l) => (t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia')),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
-        const { data } = await fetch(link);
+        const { data } = await fetchConReintentos(link);
         const $ = cheerio.load(data);
-        return $('time').attr('datetime') || null;
-      } catch {
-        return null;
+        const fecha = $('time').attr('datetime') || null;
+        const fechaParseada = new Date(fecha);
+        if (isNaN(fechaParseada)) {
+          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
+          return new Date().toISOString().split('T')[0];
+        }
+        return fechaParseada.toISOString().split('T')[0];
+      } catch (e) {
+        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
+        return new Date().toISOString().split('T')[0];
       }
     },
   },
@@ -350,6 +458,8 @@ module.exports = [
                         'Sin fecha';
           return { titulo, resumen, fecha };
         });
+        const fechaParseada = new Date(datos.fecha);
+        datos.fecha = isNaN(fechaParseada) ? new Date().toISOString().split('T')[0] : fechaParseada.toISOString().split('T')[0];
         return datos;
       } catch (e) {
         console.error(`❌ Error al obtener datos de ${link}: ${e.message}`);

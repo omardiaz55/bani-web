@@ -31,10 +31,8 @@ async function extraerResumen(link) {
   try {
     const { data } = await fetchConReintentos(link, 2);
     const $ = cheerio.load(data);
-
     const parrafos = $('p').map((i, el) => $(el).text().trim()).get();
     const resumen = parrafos.find(p => p.length > 60);
-
     return resumen || '';
   } catch (e) {
     console.warn(`⚠️ No se pudo extraer resumen de: ${link} - Error: ${e.message}`);
@@ -53,7 +51,6 @@ async function obtenerFechaReal(fuente, link, browser) {
       console.warn(`⚠️ No se pudo extraer fecha de ${link} en ${fuente.nombre}`);
       return null;
     }
-    // Estandarizar formato de fecha a YYYY-MM-DD
     const fechaParseada = new Date(fecha);
     if (isNaN(fechaParseada)) {
       console.warn(`⚠️ Fecha inválida en ${link} de ${fuente.nombre}: ${fecha}`);
@@ -71,8 +68,9 @@ async function scrapearFuente(fuente) {
   let browser;
   try {
     // Inicializar navegador para fuentes que usan Puppeteer
-    if (fuente.nombre === 'Peravia Vision' || fuente.nombre === 'Acento' || fuente.nombre === 'Manaclar Televisión') {
+    if (fuente.nombre === 'Notisur Baní' || fuente.nombre === 'El Poder Banilejo' || fuente.nombre === 'Peravia Vision' || fuente.nombre === 'Acento' || fuente.nombre === 'Manaclar Televisión') {
       browser = await puppeteer.launch({
+        executablePath: '/usr/bin/chromium-browser', // Usar Chromium del sistema
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       });
@@ -81,17 +79,18 @@ async function scrapearFuente(fuente) {
     // Obtener enlaces
     let enlaces = [];
     if (fuente.obtenerEnlaces) {
-      // Usar función personalizada para fuentes como Manaclar Televisión
       enlaces = await fuente.obtenerEnlaces(browser);
     } else {
-      // Usar fetch y Cheerio para fuentes estándar
       const { data } = await fetchConReintentos(fuente.url);
       const $ = cheerio.load(data);
       enlaces = $(fuente.selector)
         .map((i, el) => {
           const titulo = $(el).text().trim();
           let link = $(el).attr('href');
-          if (!titulo || !link) return null;
+          if (!titulo || !link) {
+            console.warn(`⚠️ Enlace inválido en ${fuente.nombre}: título=${titulo}, link=${link}`);
+            return null;
+          }
           if (fuente.base && link.startsWith('/')) {
             link = fuente.base + link;
           }
@@ -100,19 +99,22 @@ async function scrapearFuente(fuente) {
         .get()
         .filter(link => link);
     }
+
+    // Limitar a 10 enlaces por fuente para evitar sobrecarga
+    enlaces = enlaces.slice(0, 10);
     console.log(`✅ ${fuente.nombre}: ${enlaces.length} noticias encontradas`);
 
     // Procesar cada enlace
     for (const link of enlaces) {
       const noticia = {
         fuente: fuente.nombre,
-        titulo: link, // Título provisional, se actualizará si es posible
+        titulo: link,
         link,
         resumen: null,
         fecha: null,
       };
 
-      // Obtener título y resumen si no hay función personalizada
+      // Obtener título y resumen
       if (!fuente.obtenerDatosNoticia) {
         try {
           const { data } = await fetchConReintentos(link);
@@ -124,17 +126,18 @@ async function scrapearFuente(fuente) {
           noticia.titulo = link;
         }
       } else {
-        // Usar función personalizada para obtener datos (ej. Manaclar Televisión)
         const datos = await fuente.obtenerDatosNoticia(link, browser);
         noticia.titulo = datos.titulo;
         noticia.resumen = datos.resumen;
-        noticia.fecha = datos.fecha; // Fecha provisional, se actualizará
+        noticia.fecha = datos.fecha;
       }
 
       // Obtener fecha
       noticia.fecha = await obtenerFechaReal(fuente, link, browser);
       noticias.push(noticia);
       console.log(`🧠 Generando datos para: ${noticia.titulo}`);
+      // Pausa para evitar sobrecarga
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
   } catch (e) {
     console.error(`❌ Error en ${fuente.nombre}: ${e.message}`);
@@ -160,7 +163,6 @@ function filtrarYFormatear(noticias) {
 async function main() {
   console.log('🔍 Buscando noticias sobre Baní...\n');
   const resultados = [];
-  // Procesar fuentes secuencialmente para evitar sobrecarga
   for (const fuente of fuentes) {
     const noticias = await scrapearFuente(fuente);
     resultados.push(...noticias);
