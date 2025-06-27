@@ -8,7 +8,7 @@ const normalizar = texto =>
   texto.toLowerCase().replace(/[^À-ſa-z0-9\s]/gi, '').replace(/\s+/g, ' ').trim();
 
 const axiosInstancia = axios.create({
-  timeout: 10000,
+  timeout: 15000,
   headers: {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -31,7 +31,7 @@ async function extraerResumen(link) {
   try {
     const { data } = await fetchConReintentos(link, 2);
     const $ = cheerio.load(data);
-    const parrafos = $('p').map((i, el) => $(el).text().trim()).get();
+    const parrafos = $('p, .entry-content p, .post-content p').map((i, el) => $(el).text().trim()).get();
     const resumen = parrafos.find(p => p.length > 60);
     return resumen || '';
   } catch (e) {
@@ -67,10 +67,10 @@ async function scrapearFuente(fuente) {
   const noticias = [];
   let browser;
   try {
-    // Inicializar navegador para fuentes que usan Puppeteer
-    if (fuente.nombre === 'Notisur Baní' || fuente.nombre === 'El Poder Banilejo' || fuente.nombre === 'Peravia Vision' || fuente.nombre === 'Acento' || fuente.nombre === 'Manaclar Televisión') {
+    // Inicializar navegador para fuentes que lo requieren
+    if (fuente.obtenerEnlaces || fuente.nombre === 'Peravia Vision' || fuente.nombre === 'Acento' || fuente.nombre === 'Manaclar Televisión' || fuente.nombre === 'Notisur Baní' || fuente.nombre === 'El Poder Banilejo' || fuente.nombre === 'Listín Diario' || fuente.nombre === 'Diario Libre' || fuente.nombre === 'Dominican Today' || fuente.nombre === 'Hoy' || fuente.nombre === 'El Nacional' || fuente.nombre === 'El Nuevo Diario' || fuente.nombre === 'Noticias SIN' || fuente.nombre === 'Al Momento' || fuente.nombre === 'El Caribe' || fuente.nombre === 'De Último Minuto') {
       browser = await puppeteer.launch({
-        executablePath: '/usr/bin/chromium-browser', // Usar Chromium del sistema
+        executablePath: '/usr/bin/chromium-browser',
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       });
@@ -97,10 +97,10 @@ async function scrapearFuente(fuente) {
           return fuente.filtrar(titulo, link) ? link : null;
         })
         .get()
-        .filter(link => link);
+        .filter(link => link && !link.includes('facebook.com') && !link.includes('twitter.com') && !link.includes('instagram.com') && !link.includes('youtube.com'));
     }
 
-    // Limitar a 10 enlaces por fuente para evitar sobrecarga
+    // Limitar a 10 enlaces por fuente
     enlaces = enlaces.slice(0, 10);
     console.log(`✅ ${fuente.nombre}: ${enlaces.length} noticias encontradas`);
 
@@ -133,18 +133,17 @@ async function scrapearFuente(fuente) {
       }
 
       // Obtener fecha
-      noticia.fecha = await obtenerFechaReal(fuente, link, browser);
+      if (!noticia.fecha) {
+        noticia.fecha = await obtenerFechaReal(fuente, link, browser);
+      }
       noticias.push(noticia);
       console.log(`🧠 Generando datos para: ${noticia.titulo}`);
-      // Pausa para evitar sobrecarga
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
   } catch (e) {
     console.error(`❌ Error en ${fuente.nombre}: ${e.message}`);
   } finally {
-    if (browser) {
-      await browser.close().catch(() => {});
-    }
+    if (browser) await browser.close().catch(() => {});
   }
   return noticias;
 }
@@ -153,7 +152,7 @@ function filtrarYFormatear(noticias) {
   const unicas = new Map();
   noticias.forEach(n => {
     const clave = normalizar(n.titulo);
-    if (!unicas.has(clave)) {
+    if (!unicas.has(clave) && n.titulo !== 'Sin título' && n.titulo !== n.link) {
       unicas.set(clave, n);
     }
   });
