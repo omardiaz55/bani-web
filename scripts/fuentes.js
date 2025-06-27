@@ -72,22 +72,17 @@ module.exports = [
     selector: "a",
     base: "",
     filtrar: t => t.toLowerCase().includes('baní'),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetch, browser) => {
+      let page;
       try {
-        // Usar puppeteer para renderizar la página
-        const browser = await puppeteer.launch({ headless: true });
-        const page = await browser.newPage();
-        await page.goto(link, { waitUntil: 'networkidle2', timeout: 30000 });
-        // Esperar 2 segundos usando setTimeout envuelto en una promesa
+        page = await browser.newPage();
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+        await page.goto(link, { waitUntil: 'networkidle2', timeout: 60000 });
         await new Promise(resolve => setTimeout(resolve, 2000));
         const content = await page.content();
-        await browser.close();
-
         const $ = cheerio.load(content);
-        // Intentar selector específico para Peravia Vision
         let fecha = $('.elementor-post-date').text().trim();
 
-        // Parsear fecha en formato "DD MMMM, YYYY" (ej. "26 junio, 2025")
         if (fecha.match(/^\d{1,2}\s\w+,\s\d{4}$/)) {
           const meses = {
             'enero': '01', 'febrero': '02', 'marzo': '03', 'abril': '04',
@@ -98,15 +93,13 @@ module.exports = [
           fecha = `${year}-${meses[mes.toLowerCase()]}-${day.padStart(2, '0')}`;
         }
 
-        // Extraer fecha de la URL como respaldo (formato /YYYY/MM/DD/)
         if (!fecha || isNaN(new Date(fecha))) {
           const match = link.match(/\/(\d{4})\/(\d{2})\/(\d{2})\//);
           if (match) {
-            fecha = `${match[1]}-${match[2]}-${match[3]}`; // YYYY-MM-DD
+            fecha = `${match[1]}-${match[2]}-${match[3]}`;
           }
         }
 
-        // Validar y parsear la fecha
         const fechaParseada = new Date(fecha);
         if (isNaN(fechaParseada)) {
           console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
@@ -115,8 +108,11 @@ module.exports = [
         return fechaParseada.toISOString().split('T')[0];
       } catch (e) {
         console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
-        await browser.close().catch(() => {}); // Asegurar cierre del navegador
         return new Date().toISOString().split('T')[0];
+      } finally {
+        if (page) {
+          await page.close().catch(() => {});
+        }
       }
     },
   },
@@ -158,35 +154,27 @@ module.exports = [
     selector: "article a",
     base: "https://acento.com.do",
     filtrar: (t, l) => (t.toLowerCase().includes('baní') || t.toLowerCase().includes('peravia')),
-    obtenerFecha: async (link, cheerio, fetch) => {
+    obtenerFecha: async (link, cheerio, fetch, browser) => {
+      let page;
       try {
-        // Usar puppeteer para renderizar la página
-        const browser = await puppeteer.launch({ headless: true });
-        const page = await browser.newPage();
-        await page.goto(link, { waitUntil: 'networkidle2', timeout: 30000 });
-        // Esperar a que el elemento time[datetime] esté presente
+        page = await browser.newPage();
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+        await page.goto(link, { waitUntil: 'networkidle2', timeout: 60000 });
         await page.waitForSelector('time[datetime]', { timeout: 10000 }).catch(() => {
           console.warn(`⚠️ Selector time[datetime] no encontrado en ${link}`);
         });
-        // Esperar 10 segundos adicionales para asegurar renderizado completo
         await new Promise(resolve => setTimeout(resolve, 10000));
-        // Guardar HTML para depuración
         const content = await page.content();
         fs.writeFileSync(`debug-acento-${link.replace(/[:/]/g, '_')}.html`, content);
-        // Extraer fecha directamente con page.evaluate
         let fecha = await page.evaluate(() => {
           const time = document.querySelector('time[datetime]');
           return time ? time.getAttribute('datetime') : null;
         });
-        console.log(`🧠 Fecha extraída para ${link}: ${fecha}`); // Log de depuración
-        await browser.close();
-
-        // Parsear fecha en formato ISO (ej. "2025-06-25T21:55:14-04:00")
+        console.log(`🧠 Fecha extraída para ${link}: ${fecha}`);
         if (fecha && fecha.includes('T')) {
-          fecha = fecha.split('T')[0]; // Tomar solo YYYY-MM-DD
+          fecha = fecha.split('T')[0];
         }
 
-        // Validar y parsear la fecha
         const fechaParseada = new Date(fecha);
         if (isNaN(fechaParseada)) {
           console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual como respaldo`);
@@ -195,8 +183,11 @@ module.exports = [
         return fechaParseada.toISOString().split('T')[0];
       } catch (e) {
         console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
-        await browser.close().catch(() => {}); // Asegurar cierre del navegador
         return new Date().toISOString().split('T')[0];
+      } finally {
+        if (page) {
+          await page.close().catch(() => {});
+        }
       }
     },
   },
@@ -315,15 +306,16 @@ module.exports = [
   {
     nombre: 'Manaclar Televisión',
     url: 'https://manaclartelevision.com/categorias/locales/',
-    obtenerEnlaces: async () => {
+    obtenerEnlaces: async (browser) => {
+      let page;
       try {
-        const browser = await puppeteer.launch({ headless: true });
-        const page = await browser.newPage();
+        page = await browser.newPage();
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
         await page.goto('https://manaclartelevision.com/categorias/locales/', {
           waitUntil: 'networkidle2',
-          timeout: 30000,
+          timeout: 60000,
         });
-        await new Promise(resolve => setTimeout(resolve, 5000)); // Esperar carga dinámica
+        await new Promise(resolve => setTimeout(resolve, 5000));
         const enlaces = await page.evaluate(() => {
           const articles = document.querySelectorAll('article, .post, .entry');
           return Array.from(articles).map(article => {
@@ -331,20 +323,23 @@ module.exports = [
             return enlaceElement ? enlaceElement.href : null;
           }).filter(href => href);
         });
-        await browser.close();
         console.log(`✅ Manaclar Televisión: ${enlaces.length} noticias encontradas`);
         return enlaces;
       } catch (e) {
         console.error(`❌ Error al obtener enlaces de Manaclar Televisión: ${e.message}`);
-        await browser.close().catch(() => {});
         return [];
+      } finally {
+        if (page) {
+          await page.close().catch(() => {});
+        }
       }
     },
-    obtenerDatosNoticia: async (link) => {
+    obtenerDatosNoticia: async (link, browser) => {
+      let page;
       try {
-        const browser = await puppeteer.launch({ headless: true });
-        const page = await browser.newPage();
-        await page.goto(link, { waitUntil: 'networkidle2', timeout: 30000 });
+        page = await browser.newPage();
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+        await page.goto(link, { waitUntil: 'networkidle2', timeout: 60000 });
         await new Promise(resolve => setTimeout(resolve, 5000));
         const datos = await page.evaluate(() => {
           const titulo = document.querySelector('h1, .post-title, .entry-title')?.innerText.trim() || 'Sin título';
@@ -355,25 +350,27 @@ module.exports = [
                         'Sin fecha';
           return { titulo, resumen, fecha };
         });
-        await browser.close();
         return datos;
       } catch (e) {
         console.error(`❌ Error al obtener datos de ${link}: ${e.message}`);
-        await browser.close().catch(() => {});
         return { titulo: 'Error', resumen: 'No se pudo obtener la noticia', fecha: new Date().toISOString().split('T')[0] };
+      } finally {
+        if (page) {
+          await page.close().catch(() => {});
+        }
       }
     },
-    obtenerFecha: async (link) => {
+    obtenerFecha: async (link, browser) => {
+      let page;
       try {
-        const browser = await puppeteer.launch({ headless: true });
-        const page = await browser.newPage();
-        await page.goto(link, { waitUntil: 'networkidle2', timeout: 30000 });
+        page = await browser.newPage();
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+        await page.goto(link, { waitUntil: 'networkidle2', timeout: 60000 });
         await new Promise(resolve => setTimeout(resolve, 5000));
         const fecha = await page.evaluate(() => {
           const fechaElement = document.querySelector('time.entry-date, .post-date, .published');
           return fechaElement ? fechaElement.getAttribute('datetime') || fechaElement.innerText.trim() : 'Sin fecha';
         });
-        await browser.close();
         if (fecha && fecha.includes('T')) {
           return fecha.split('T')[0];
         }
@@ -385,8 +382,11 @@ module.exports = [
         return fechaParseada.toISOString().split('T')[0];
       } catch (e) {
         console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual como respaldo`);
-        await browser.close().catch(() => {});
         return new Date().toISOString().split('T')[0];
+      } finally {
+        if (page) {
+          await page.close().catch(() => {});
+        }
       }
     }
   }

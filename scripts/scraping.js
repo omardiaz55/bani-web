@@ -1,6 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
+const puppeteer = require('puppeteer');
 const fuentes = require('./fuentes');
 
 const normalizar = texto =>
@@ -41,13 +42,13 @@ async function extraerResumen(link) {
   }
 }
 
-async function obtenerFechaReal(fuente, link) {
+async function obtenerFechaReal(fuente, link, browser) {
   try {
     if (!fuente.obtenerFecha) {
       console.warn(`⚠️ Fuente ${fuente.nombre} no tiene función obtenerFecha`);
       return null;
     }
-    const fecha = await fuente.obtenerFecha(link, cheerio, fetchConReintentos);
+    const fecha = await fuente.obtenerFecha(link, cheerio, fetchConReintentos, browser);
     if (!fecha) {
       console.warn(`⚠️ No se pudo extraer fecha de ${link} en ${fuente.nombre}`);
       return null;
@@ -67,77 +68,114 @@ async function obtenerFechaReal(fuente, link) {
 
 async function scrapearFuente(fuente) {
   const noticias = [];
+  let browser;
   try {
-    const { data } = await fetchConReintentos(fuente.url);
-    const $ = cheerio.load(data);
+    // Inicializar navegador para fuentes que usan Puppeteer
+    if (fuente.nombre === 'Peravia Vision' || fuente.nombre === 'Acento' || fuente.nombre === 'Manaclar Televisión') {
+      browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      });
+    }
 
-    $(fuente.selector).each((i, el) => {
-      const titulo = $(el).text().trim();
-      let link = $(el).attr('href');
+    // Obtener enlaces
+    let enlaces = [];
+    if (fuente.obtenerEnlaces) {
+      // Usar función personalizada para fuentes como Manaclar Televisión
+      enlaces = await fuente.obtenerEnlaces(browser);
+    } else {
+      // Usar fetch y Cheerio para fuentes estándar
+      const { data } = await fetchConReintentos(fuente.url);
+      const $ = cheerio.load(data);
+      enlaces = $(fuente.selector)
+        .map((i, el) => {
+          const titulo = $(el).text().trim();
+          let link = $(el).attr('href');
+          if (!titulo || !link) return null;
+          if (fuente.base && link.startsWith('/')) {
+            link = fuente.base + link;
+          }
+          return fuente.filtrar(titulo, link) ? link : null;
+        })
+        .get()
+        .filter(link => link);
+    }
+    console.log(`✅ ${fuente.nombre}: ${enlaces.length} noticias encontradas`);
 
-      if (!titulo || !link) return;
+    // Procesar cada enlace
+    for (const link of enlaces) {
+      const noticia = {
+        fuente: fuente.nombre,
+        titulo: link, // Título provisional, se actualizará si es posible
+        link,
+        resumen: null,
+        fecha: null,
+      };
 
-      if (fuente.base && link.startsWith('/')) {
-        link = fuente.base + link;
+      // Obtener título y resumen si no hay función personalizada
+      if (!fuente.obtenerDatosNoticia) {
+        try {
+          const { data } = await fetchConReintentos(link);
+          const $ = cheerio.load(data);
+          noticia.titulo = $('h1, .post-title, .entry-title').first().text().trim() || link;
+          noticia.resumen = await extraerResumen(link);
+        } catch (e) {
+          console.warn(`⚠️ Error al obtener título de ${link}: ${e.message}`);
+          noticia.titulo = link;
+        }
+      } else {
+        // Usar función personalizada para obtener datos (ej. Manaclar Televisión)
+        const datos = await fuente.obtenerDatosNoticia(link, browser);
+        noticia.titulo = datos.titulo;
+        noticia.resumen = datos.resumen;
+        noticia.fecha = datos.fecha; // Fecha provisional, se actualizará
       }
 
-      if (fuente.filtrar(titulo, link)) {
-        noticias.push({
-          fuente: fuente.nombre,
-          titulo,
-          link,
-          resumen: null,
-          fecha: null,
-        });
-      }
-    });
-
-    console.log(`✅ ${fuente.nombre}: ${noticias.length} noticias encontradas`);
+      // Obtener fecha
+      noticia.fecha = await obtenerFechaReal(fuente, link, browser);
+      noticias.push(noticia);
+      console.log(`🧠 Generando datos para: ${noticia.titulo}`);
+    }
   } catch (e) {
-    console.error(`❌ ${fuente.nombre}: ${e.message}`);
+    console.error(`❌ Error en ${fuente.nombre}: ${e.message}`);
+  } finally {
+    if (browser) {
+      await browser.close().catch(() => {});
+    }
   }
-
   return noticias;
 }
 
 function filtrarYFormatear(noticias) {
   const unicas = new Map();
-
   noticias.forEach(n => {
     const clave = normalizar(n.titulo);
     if (!unicas.has(clave)) {
       unicas.set(clave, n);
     }
   });
-
   return Array.from(unicas.values());
 }
 
-async function agregarDatos(noticias) {
-  for (const noticia of noticias) {
-    console.log(`🧠 Generando resumen: ${noticia.titulo}`);
-    noticia.resumen = await extraerResumen(noticia.link);
-    noticia.fecha = await obtenerFechaReal(fuentes.find(f => f.nombre === noticia.fuente), noticia.link);
+async function main() {
+  console.log('🔍 Buscando noticias sobre Baní...\n');
+  const resultados = [];
+  // Procesar fuentes secuencialmente para evitar sobrecarga
+  for (const fuente of fuentes) {
+    const noticias = await scrapearFuente(fuente);
+    resultados.push(...noticias);
   }
-}
-
-function ordenarPorFecha(noticias) {
-  return noticias.sort((a, b) => {
+  const seleccionadas = filtrarYFormatear(resultados);
+  const ordenadas = seleccionadas.sort((a, b) => {
     const fechaA = a.fecha ? new Date(a.fecha) : new Date(0);
     const fechaB = b.fecha ? new Date(b.fecha) : new Date(0);
     return fechaB - fechaA;
   });
-}
-
-(async () => {
-  console.log('🔍 Buscando noticias sobre Baní...\n');
-
-  const resultados = await Promise.all(fuentes.map(fuente => scrapearFuente(fuente)));
-  const todas = resultados.flat();
-  const seleccionadas = filtrarYFormatear(todas);
-  await agregarDatos(seleccionadas);
-  const ordenadas = ordenarPorFecha(seleccionadas);
-
   fs.writeFileSync('noticias.json', JSON.stringify(ordenadas, null, 2));
   console.log(`\n📝 ${ordenadas.length} noticias guardadas en noticias.json`);
-})();
+}
+
+main().catch(err => {
+  console.error(`❌ Error en el proceso principal: ${err.message}`);
+  process.exit(1);
+});
