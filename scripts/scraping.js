@@ -112,17 +112,25 @@ async function scrapearFuente(fuente, browser) {
         link,
         resumen: null,
         fecha: null,
+        imagen: null,  // NUEVO campo
       };
 
-      // Obtener título y resumen
+      // Obtener título, resumen e imagen
       if (!fuente.obtenerDatosNoticia) {
         try {
           const { data } = await fetchConReintentos(link);
           const $ = cheerio.load(data);
+
           noticia.titulo = $('h1, .post-title, .entry-title').first().text().trim() || link;
           noticia.resumen = await extraerResumen(link);
+
+          noticia.imagen =
+            $('meta[property="og:image"]').attr('content') ||
+            $('article img').first().attr('src') ||
+            null;
+
         } catch (e) {
-          console.warn(`⚠️ Error al obtener título de ${link}: ${e.message}`);
+          console.warn(`⚠️ Error al obtener título/imagen de ${link}: ${e.message}`);
           noticia.titulo = link;
         }
       } else {
@@ -130,14 +138,18 @@ async function scrapearFuente(fuente, browser) {
         noticia.titulo = datos.titulo;
         noticia.resumen = datos.resumen;
         noticia.fecha = datos.fecha;
+        noticia.imagen = datos.imagen || null; // en caso de que tu fuente personalizada devuelva imagen
       }
 
       if (!noticia.fecha) {
         noticia.fecha = await obtenerFechaReal(fuente, link, browser);
       }
+
       noticias.push(noticia);
-      console.log(`🧠 Generando datos para: ${noticia.titulo}`);
-      await new Promise(resolve => setTimeout(resolve, 500)); // reduje el delay
+
+      console.log(`🧠 Generando datos para: ${noticia.titulo} [imagen: ${noticia.imagen || 'sin imagen'}]`);
+
+      await new Promise(resolve => setTimeout(resolve, 500)); // delay suave
     }
   } catch (e) {
     console.error(`❌ Error en ${fuente.nombre}: ${e.message}`);

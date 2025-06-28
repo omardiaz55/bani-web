@@ -51,52 +51,42 @@ window.addEventListener('scroll', () => {
 });
 
 // 🔄 Mostrar solo 5 noticias en index.html con fecha formateada
-document.addEventListener('DOMContentLoaded', () => {
-  const contenedor = document.getElementById('lista-noticias');
-  if (!contenedor) return;
+async function cargarNoticiasPortada() {
+  try {
+    const res = await fetch('noticias.json');
+    const noticias = await res.json();
 
-  fetch('noticias.json')
-    .then(res => res.json())
-    .then(noticias => {
-      if (!noticias.length) {
-        contenedor.innerHTML = '<li>No se encontraron noticias recientes.</li>';
-        return;
-      }
+    if (noticias.length === 0) return;
 
-      contenedor.innerHTML = '';
+    // Hero destacado
+    const hero = noticias[0];
+    document.getElementById('noticiaHeroPortada').innerHTML = `
+      <img src="${hero.imagen || 'https://via.placeholder.com/1200x400'}" alt="${hero.titulo}">
+      <div class="overlay">
+        <h3>${hero.titulo}</h3>
+        <a href="${hero.link}" target="_blank">Leer más</a>
+      </div>
+    `;
 
-      noticias.slice(0, 5).forEach(noticia => {
-        const item = document.createElement('li');
-
-        // Formatear la fecha
-        const fechaFormateada = noticia.fecha
-          ? new Date(noticia.fecha).toLocaleDateString('es-DO', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })
-          : 'Fecha desconocida';
-
-        item.innerHTML = `
-          <a href="${noticia.link}" target="_blank" rel="noopener" style="font-weight: bold; color: #2a5dab;">
-            ${noticia.titulo}
-          </a><br>
-          <small style="color: #555;"><strong>${noticia.fuente || ''}</strong> • ${fechaFormateada}</small>
-          ${noticia.resumen ? `<p>${noticia.resumen}</p>` : ''}
-        `;
-        contenedor.appendChild(item);
-      });
-
-      const verMas = document.createElement('div');
-      verMas.style.textAlign = 'center';
-      verMas.innerHTML = `
-        <a href="noticias.html" class="hero-btn" style="margin-top: 1rem; display: inline-block;">
-          Ver todas las noticias
-        </a>
+    // 4 noticias secundarias
+    const contenedorSecundarias = document.getElementById('noticiasSecundariasPortada');
+    const secundarias = noticias.slice(1, 5);
+    secundarias.forEach(noticia => {
+      const card = document.createElement('div');
+      card.className = 'noticia-card-portada';
+      card.innerHTML = `
+        <img src="${noticia.imagen || 'https://via.placeholder.com/300x200'}" alt="${noticia.titulo}">
+        <div class="contenido">
+          <h4><a href="${noticia.link}" target="_blank">${noticia.titulo}</a></h4>
+          <small>${noticia.fuente} • ${noticia.fecha}</small>
+        </div>
       `;
-      contenedor.parentElement.appendChild(verMas);
-    })
-    .catch(() => {
-      contenedor.innerHTML = '<li>No se pudieron cargar las noticias.</li>';
+      contenedorSecundarias.appendChild(card);
     });
-});
+
+  } catch (e) {
+    console.error('Error cargando noticias en portada:', e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', cargarNoticiasPortada);

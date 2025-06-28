@@ -124,7 +124,7 @@ body {
   }
 }
 .hero {
-  height: 90vh;
+  height: 50vh;
   background-image: url('imagenes/Bani_Dominican_Republic_town_7.jpg'); /* tu imagen real aquí */
   background-size: cover;
   background-position: center;
@@ -173,6 +173,7 @@ body {
 }
 
 .intro {
+  background-color: #f0f0f0;
   padding: 2rem;
   font-size: 1.1rem;
   text-align: center;
@@ -389,42 +390,184 @@ body {
 .ubicacion-texto p {
   text-align: justify;
 }
-
-.seccion-noticias {
-  padding: 3rem 1rem;
-  background-color: #f0f0f0;
-  text-align: center;
+.noticias-portada {
+  padding: 2rem 1rem;
+  background-color: #f9f9f9;
 }
 
-.seccion-noticias h2 {
-  font-size: 2rem;
+.noticias-portada h2 {
+  text-align: center;
   margin-bottom: 2rem;
+  font-size: 1.8rem;
   color: #333;
 }
 
-#lista-noticias {
-  list-style: none;
-  padding: 0;
-  margin: 0 auto;
-  max-width: 800px;
-  text-align: left;
+/* hero pequeño portada */
+.noticia-hero-portada {
+  position: relative;
+  margin-bottom: 2rem;
 }
 
-#lista-noticias li {
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 1rem;
+.noticia-hero-portada img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-#lista-noticias a {
-  font-size: 1.1rem;
-  color: #2a5dab;
+.noticia-hero-portada .overlay {
+  position: absolute;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  width: 100%;
+  padding: 1rem;
+}
+
+.noticia-hero-portada .overlay h3 {
+  margin: 0 0 0.5rem 0;
+}
+
+.noticia-hero-portada .overlay a {
+  color: #ffcc00;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: bold;
 }
 
-#lista-noticias a:hover {
-  text-decoration: underline;
+/* grid secundarias portada */
+.grid-noticias-portada {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  gap: 20px;
+}
+
+.noticia-card-portada {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.noticia-card-portada:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.noticia-card-portada img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.noticia-card-portada .contenido {
+  padding: 0.5rem;
+}
+
+.noticia-card-portada .contenido h4 {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.ver-mas-noticias {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.ver-mas-noticias a {
+  background-color: #ffcc00;
+  color: #222;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.ver-mas-noticias a:hover {
+  background-color: #e6b800;
+}
+
+
+
+/* NOTICIA HERO */
+.noticia-hero {
+  position: relative;
+  margin-bottom: 2rem;
+}
+.noticia-hero img {
+  width: 100%;
+  height: 350px; /* tamaño más contenido */
+  object-fit: cover;
+  border-radius: 8px;
+}
+.noticia-hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 1rem;
+  width: 100%;
+}
+.noticia-hero-overlay h3 {
+  margin: 0 0 0.5rem 0;
+}
+.noticia-hero-overlay .leer-mas {
+  display: inline-block;
+  background-color: #ffcc00;
+  color: black;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+}
+/* Estilo de tarjeta tipo listado con miniatura */
+.noticia-listado {
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  background: #fff;
+}
+
+.noticia-listado:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.noticia-miniatura img {
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.noticia-contenido {
+  padding: 1rem;
+  flex: 1;
+}
+
+.noticia-contenido h4 {
+  margin-top: 0;
+}
+
+.noticia-contenido p {
+  margin: 0.5rem 0;
+}
+
+.noticia-contenido .iconos-sociales {
+  display: flex;
+  gap: 10px;
+  margin-top: 0.5rem;
+}
+
+@media(max-width: 600px) {
+  .noticia-listado {
+    flex-direction: column;
+  }
+  .noticia-miniatura img {
+    width: 100%;
+    height: auto;
+  }
 }
 
 #backToTop {
