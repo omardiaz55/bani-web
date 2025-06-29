@@ -24,7 +24,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #222;
+  background-color: #ffffff;
   z-index: 1000;
   display: flex;
   justify-content: space-between;
@@ -37,7 +37,7 @@ body {
 .navbar-logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
 }
 
 .navbar-links {
@@ -48,7 +48,7 @@ body {
 
 .navbar-links a {
   text-decoration: none;
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   padding: 0 1rem;
 }
 
@@ -58,7 +58,7 @@ body {
   font-size: 1.5rem;
   background: none;
   border: none;
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   cursor: pointer;
 }
 
