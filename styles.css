@@ -124,7 +124,7 @@ body {
   }
 }
 .hero {
-  height: 50vh;
+  height: 70vh;
   background-image: url('imagenes/Bani_Dominican_Republic_town_7.jpg'); /* tu imagen real aquí */
   background-size: cover;
   background-position: center;
