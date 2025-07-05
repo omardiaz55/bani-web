@@ -106,14 +106,18 @@ async function scrapearFuente(fuente, browser) {
     console.log(`✅ ${fuente.nombre}: ${enlaces.length} noticias encontradas`);
 
     for (const link of enlaces) {
-      const noticia = {
-        fuente: fuente.nombre,
-        titulo: link, // provisional
-        link,
-        resumen: null,
-        fecha: null,
-        imagen: null,
-      };
+  const noticia = {
+    fuente: fuente.nombre,
+    titulo: null,
+    link: typeof link === 'string' ? link : link.link,
+    resumen: null,
+    fecha: null,
+    imagen: null
+  };
+
+  if (typeof link !== 'string') {
+    noticia.titulo = link.titulo;
+  }
 
       // Obtener título, resumen e imagen
       if (!fuente.obtenerDatosNoticia) {
@@ -121,8 +125,10 @@ async function scrapearFuente(fuente, browser) {
           const { data } = await fetchConReintentos(link);
           const $ = cheerio.load(data);
 
-          noticia.titulo = $('h1, .post-title, .entry-title, article header h1').first().text().trim() || link;
-
+            noticia.titulo =
+              $('h1, .post-title, .entry-title, article header h1').first().text().trim() ||
+              $('meta[property="og:title"]').attr('content')?.trim() ||
+              link;
           // Validación reforzada
           if (!noticia.titulo || noticia.titulo === link) {
             console.warn(`⚠️ No se encontró título válido en ${link}, se usará el propio enlace como título.`);
@@ -152,7 +158,14 @@ async function scrapearFuente(fuente, browser) {
         noticia.fecha = await obtenerFechaReal(fuente, link, browser);
       }
 
-      noticias.push(noticia);
+      // recortar resumen a 300 caracteres
+if (noticia.resumen) {
+  noticia.resumen = noticia.resumen.length > 300
+    ? noticia.resumen.slice(0, 300) + "..."
+    : noticia.resumen;
+}
+
+noticias.push(noticia);
 
       console.log(`🧠 Generando datos para: ${noticia.titulo} [imagen: ${noticia.imagen || 'sin imagen'}]`);
 
