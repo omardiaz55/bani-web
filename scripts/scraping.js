@@ -108,11 +108,11 @@ async function scrapearFuente(fuente, browser) {
     for (const link of enlaces) {
       const noticia = {
         fuente: fuente.nombre,
-        titulo: link,
+        titulo: link, // provisional
         link,
         resumen: null,
         fecha: null,
-        imagen: null,  // NUEVO campo
+        imagen: null,
       };
 
       // Obtener título, resumen e imagen
@@ -121,7 +121,14 @@ async function scrapearFuente(fuente, browser) {
           const { data } = await fetchConReintentos(link);
           const $ = cheerio.load(data);
 
-          noticia.titulo = $('h1, .post-title, .entry-title').first().text().trim() || link;
+          noticia.titulo = $('h1, .post-title, .entry-title, article header h1').first().text().trim() || link;
+
+          // Validación reforzada
+          if (!noticia.titulo || noticia.titulo === link) {
+            console.warn(`⚠️ No se encontró título válido en ${link}, se usará el propio enlace como título.`);
+            noticia.titulo = link;
+          }
+
           noticia.resumen = await extraerResumen(link);
 
           noticia.imagen =
@@ -138,7 +145,7 @@ async function scrapearFuente(fuente, browser) {
         noticia.titulo = datos.titulo;
         noticia.resumen = datos.resumen;
         noticia.fecha = datos.fecha;
-        noticia.imagen = datos.imagen || null; // en caso de que tu fuente personalizada devuelva imagen
+        noticia.imagen = datos.imagen || null;
       }
 
       if (!noticia.fecha) {
@@ -149,7 +156,7 @@ async function scrapearFuente(fuente, browser) {
 
       console.log(`🧠 Generando datos para: ${noticia.titulo} [imagen: ${noticia.imagen || 'sin imagen'}]`);
 
-      await new Promise(resolve => setTimeout(resolve, 500)); // delay suave
+      await new Promise(resolve => setTimeout(resolve, 500));
     }
   } catch (e) {
     console.error(`❌ Error en ${fuente.nombre}: ${e.message}`);
@@ -160,6 +167,9 @@ async function scrapearFuente(fuente, browser) {
 function filtrarYFormatear(noticias) {
   const unicas = new Map();
   noticias.forEach(n => {
+    if (n.titulo === n.link) {
+      console.warn(`⚠️ Noticia descartada porque el título es igual al link: ${n.link}`);
+    }
     const clave = normalizar(n.titulo);
     if (!unicas.has(clave) && n.titulo !== 'Sin título' && n.titulo !== n.link) {
       unicas.set(clave, n);
@@ -173,11 +183,9 @@ async function main() {
   const resultados = [];
   const isLinux = process.platform === 'linux';
 
-  // Separar las fuentes
   const fuentesConPuppeteer = fuentes.filter(f => typeof f.obtenerEnlaces === 'function');
   const fuentesConAxios = fuentes.filter(f => !f.obtenerEnlaces);
 
-  // Solo lanzar puppeteer si hay fuentes dinámicas
   let browser = null;
   if (fuentesConPuppeteer.length > 0) {
     browser = await puppeteer.launch({
@@ -189,12 +197,10 @@ async function main() {
 
   const limit = pLimit(3);
 
-  // Fuentes con axios
   const tareasAxios = fuentesConAxios.map(fuente =>
     limit(() => scrapearFuente(fuente, null))
   );
 
-  // Fuentes con puppeteer
   const tareasPuppeteer = fuentesConPuppeteer.map(fuente =>
     limit(() => scrapearFuente(fuente, browser))
   );
