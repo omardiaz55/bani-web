@@ -172,15 +172,37 @@ async function main() {
   console.log('🔍 Buscando noticias sobre Baní...\n');
   const resultados = [];
   const isLinux = process.platform === 'linux';
-  const browser = await puppeteer.launch({
-    executablePath: isLinux ? '/usr/bin/chromium-browser' : undefined,
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
+
+  // Separar las fuentes
+  const fuentesConPuppeteer = fuentes.filter(f => typeof f.obtenerEnlaces === 'function');
+  const fuentesConAxios = fuentes.filter(f => !f.obtenerEnlaces);
+
+  // Solo lanzar puppeteer si hay fuentes dinámicas
+  let browser = null;
+  if (fuentesConPuppeteer.length > 0) {
+    browser = await puppeteer.launch({
+      executablePath: isLinux ? '/usr/bin/chromium-browser' : undefined,
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
+  }
 
   const limit = pLimit(3);
-  const tareas = fuentes.map(fuente => limit(() => scrapearFuente(fuente, browser)));
-  const resultadosFuente = await Promise.allSettled(tareas);
+
+  // Fuentes con axios
+  const tareasAxios = fuentesConAxios.map(fuente =>
+    limit(() => scrapearFuente(fuente, null))
+  );
+
+  // Fuentes con puppeteer
+  const tareasPuppeteer = fuentesConPuppeteer.map(fuente =>
+    limit(() => scrapearFuente(fuente, browser))
+  );
+
+  const resultadosFuente = await Promise.allSettled([
+    ...tareasAxios,
+    ...tareasPuppeteer,
+  ]);
 
   for (const resultado of resultadosFuente) {
     if (resultado.status === 'fulfilled') {
@@ -190,9 +212,10 @@ async function main() {
     }
   }
 
-  await browser.close();
+  if (browser) await browser.close();
 
   const seleccionadas = filtrarYFormatear(resultados);
+
   const ordenadas = seleccionadas.sort((a, b) => {
     const fechaA = a.fecha ? new Date(a.fecha) : new Date(0);
     const fechaB = b.fecha ? new Date(b.fecha) : new Date(0);

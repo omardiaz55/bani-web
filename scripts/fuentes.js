@@ -26,7 +26,7 @@ module.exports = [
   },
   {
     nombre: "El Poder Banilejo",
-    url: "https://www.elpoderbanilejo.com/v6/",
+    url: "https://www.elpoderbanilejo.com/v6/index.php/bani",
     obtenerEnlaces: async (browser) => {
       let page;
       try {
@@ -50,41 +50,56 @@ module.exports = [
       }
     },
     obtenerFecha: async (link, cheerio, fetchConReintentos, browser) => {
-      let page;
-      try {
-        page = await browser.newPage();
-        await page.setUserAgent('Mozilla/5.0');
-        await page.goto(link, { waitUntil: 'networkidle2', timeout: 60000 });
-        await new Promise(resolve => setTimeout(resolve, 2000));
-    
-        const content = await page.content();
-        const $ = cheerio.load(content);
-    
-        let fecha = $('dd.create > time').attr('datetime');
-    
-        if (!fecha) {
-          console.warn(`⚠️ Fecha no encontrada en ${link}, usando fecha actual`);
-          return new Date().toISOString().split('T')[0];
-        }
-    
-        if (fecha.includes('T')) {
-          fecha = fecha.split('T')[0];
-        }
-    
-        const fechaParseada = new Date(fecha);
-        if (isNaN(fechaParseada)) {
-          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual`);
-          return new Date().toISOString().split('T')[0];
-        }
-    
-        return fechaParseada.toISOString().split('T')[0];
-      } catch (e) {
-        console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual`);
-        return new Date().toISOString().split('T')[0];
-      } finally {
-        if (page) await page.close().catch(() => {});
+  let page;
+  try {
+    page = await browser.newPage();
+    await page.setUserAgent('Mozilla/5.0');
+    await page.goto(link, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    const content = await page.content();
+    const $ = cheerio.load(content);
+
+    let fecha = $('time[itemprop="dateCreated"]').attr('datetime')
+      || $('time[itemprop="datePublished"]').attr('datetime')
+      || $('meta[property="article:published_time"]').attr('content')
+      || $('meta[name="pubdate"]').attr('content')
+      || $('time').attr('datetime')
+      || $('span.date').text()
+      || null;
+
+    if (!fecha) {
+      // intentar extraer texto plano
+      const textoFecha = $('time').text().trim();
+      if (textoFecha.match(/\d{1,2}\s+\w+\s+\d{4}/)) {
+        fecha = textoFecha;
       }
-    },
+    }
+
+    if (!fecha) {
+      console.warn(`⚠️ Fecha no encontrada en ${link}, usando fecha actual`);
+      return new Date().toISOString().split('T')[0];
+    }
+
+    // normalizar
+    if (fecha.includes('T')) {
+      fecha = fecha.split('T')[0];
+    }
+
+    const fechaParseada = new Date(fecha);
+    if (isNaN(fechaParseada)) {
+      console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual`);
+      return new Date().toISOString().split('T')[0];
+    }
+
+    return fechaParseada.toISOString().split('T')[0];
+  } catch (e) {
+    console.warn(`⚠️ Error al obtener fecha de ${link}: ${e.message}, usando fecha actual`);
+    return new Date().toISOString().split('T')[0];
+  } finally {
+    if (page) await page.close().catch(() => {});
+  }
+},
   },
   {
     nombre: "Notisur Baní",
