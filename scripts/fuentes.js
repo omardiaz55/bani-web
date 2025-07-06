@@ -179,27 +179,33 @@ module.exports = [
   }
 },
   },
-  {
-    nombre: "Dominican Today",
-    url: "https://dominicantoday.com",
-    selector: "article .td-module-title a",
-    base: "",
-    filtrar: (titulo) => titulo.toLowerCase().includes('bani') || titulo.toLowerCase().includes('peravia'),
-    obtenerFecha: async (link, cheerio, fetchConReintentos) => {
-      try {
-        const { data } = await fetchConReintentos(link);
-        const $ = cheerio.load(data);
-        const fecha = $('meta[property="article:published_time"]').attr('content') || null;
-        const fechaParseada = new Date(fecha);
-        if (isNaN(fechaParseada)) {
-          console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando actual`);
-          return new Date().toISOString().split('T')[0];
-        }
-        return fechaParseada.toISOString().split('T')[0];
-      } catch (e) {
-        console.warn(`⚠️ Error fecha ${link}: ${e.message}, usando actual`);
-        return new Date().toISOString().split('T')[0];
-      }
-    },
+  
+ {
+  nombre: "Manaclar Televisión",
+  url: "https://manaclartelevision.com/categorias/locales/",
+  selector: "article.post h3.entry-title a",
+  base: "",
+  filtrar: (titulo, link) => {
+    // opcional: filtra solo noticias relevantes
+    return titulo.toLowerCase().includes("baní") || titulo.toLowerCase().includes("peravia");
   },
+  obtenerFecha: async (link, cheerio, fetchConReintentos) => {
+    try {
+      const { data } = await fetchConReintentos(link);
+      const $ = cheerio.load(data);
+
+      let fecha = $("time").first().text().trim();
+      if (fecha) {
+        const fechaISO = new Date(fecha);
+        if (!isNaN(fechaISO)) {
+          return fechaISO.toISOString().split("T")[0];
+        }
+      }
+      return new Date().toISOString().split("T")[0];
+    } catch (e) {
+      console.warn(`⚠️ Error fecha Manaclar ${link}: ${e.message}`);
+      return new Date().toISOString().split("T")[0];
+    }
+  },
+}
 ];
