@@ -402,37 +402,7 @@ body {
   color: #333;
 }
 
-/* hero pequeño portada */
-.noticia-hero-portada {
-  position: relative;
-  margin-bottom: 2rem;
-}
 
-.noticia-hero-portada img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.noticia-hero-portada .overlay {
-  position: absolute;
-  bottom: 0;
-  background: rgba(0,0,0,0.6);
-  color: #fff;
-  width: 100%;
-  padding: 1rem;
-}
-
-.noticia-hero-portada .overlay h3 {
-  margin: 0 0 0.5rem 0;
-}
-
-.noticia-hero-portada .overlay a {
-  color: #ffcc00;
-  text-decoration: none;
-  font-weight: bold;
-}
 
 /* grid secundarias portada */
 .grid-noticias-portada {

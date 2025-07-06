@@ -46,63 +46,42 @@
 
   <!-- SECCION DE NOTICIAS -->
   <section class="seccion-noticias">
-    <h2>Noticias de Baní</h2>
+  <h2>Noticias de Baní</h2>
+  <div class="grid-noticias" id="gridNoticias"></div>
 
-    <!-- NOTICIA HERO -->
-    <div class="noticia-hero" id="noticiaHero"></div>
+  <!-- PAGINACION -->
+  <div class="paginacion">
+    <button id="inicio">Inicio</button>
+    <button id="anterior">Anterior</button>
+    <span id="pagina-actual">Página 1</span>
+    <button id="siguiente">Siguiente</button>
+  </div>
+</section>
 
-    <!-- GRID DE NOTICIAS SECUNDARIAS -->
-    <div class="grid-noticias" id="gridNoticias"></div>
-
-    <!-- PAGINACION -->
-    <div class="paginacion">
-      <button id="inicio">Inicio</button>
-      <button id="anterior">Anterior</button>
-      <span id="pagina-actual">Página 1</span>
-      <button id="siguiente">Siguiente</button>
-    </div>
-
-  <!-- BOTON VOLVER ARRIBA -->
 
   <script>
-    let noticias = [];
-    let paginaActual = 1;
-    const noticiasPorPagina = 4;
+   let noticias = [];
+let paginaActual = 1;
+const noticiasPorPagina = 4;
 
-    async function cargarNoticias() {
-      try {
-        const res = await fetch('noticias.json');
-        noticias = await res.json();
+async function cargarNoticias() {
+  try {
+    const res = await fetch('noticias.json');
+    noticias = await res.json();
 
-        // orden descendente
-        noticias.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    noticias.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
-        renderHero();
-        mostrarPagina(paginaActual);
-        actualizarBotones();
-      } catch (err) {
-        console.error(err);
-      }
-    }
+    mostrarPagina(paginaActual);
+    actualizarBotones();
+  } catch (err) {
+    console.error(err);
+  }
+}
 
-    function renderHero() {
-      if (noticias.length === 0) return;
-      const hero = document.getElementById('noticiaHero');
-      const primera = noticias[0];
-      hero.innerHTML = `
-        <img src="${primera.imagen || 'https://via.placeholder.com/1200x400'}" alt="${primera.titulo}">
-        <div class="noticia-hero-overlay">
-          <h3>${primera.titulo}</h3>
-          <p>${primera.resumen || ''}</p>
-          <a href="${primera.link}" target="_blank" class="leer-mas">Leer más</a>
-        </div>
-      `;
-    }
-
-    function mostrarPagina(pagina) {
+function mostrarPagina(pagina) {
   const grid = document.getElementById('gridNoticias');
   grid.innerHTML = '';
-  const inicio = 1 + (pagina - 1) * noticiasPorPagina;
+  const inicio = (pagina - 1) * noticiasPorPagina;
   const fin = inicio + noticiasPorPagina;
   const noticiasPagina = noticias.slice(inicio, fin);
 
@@ -126,19 +105,19 @@
     grid.appendChild(card);
   });
 
-  const totalPaginas = Math.ceil((noticias.length - 1) / noticiasPorPagina);
+  const totalPaginas = Math.ceil(noticias.length / noticiasPorPagina);
   document.getElementById('pagina-actual').textContent = `Página ${pagina} de ${totalPaginas}`;
 }
 
-    function actualizarBotones() {
-      const anterior = document.getElementById('anterior');
-      const siguiente = document.getElementById('siguiente');
-      const totalPaginas = Math.ceil((noticias.length - 1) / noticiasPorPagina);
-      anterior.disabled = paginaActual === 1;
-      siguiente.disabled = paginaActual === totalPaginas;
-    }
+function actualizarBotones() {
+  const anterior = document.getElementById('anterior');
+  const siguiente = document.getElementById('siguiente');
+  const totalPaginas = Math.ceil(noticias.length / noticiasPorPagina);
+  anterior.disabled = paginaActual === 1;
+  siguiente.disabled = paginaActual === totalPaginas;
+}
 
-    document.getElementById('anterior').addEventListener('click', () => {
+document.getElementById('anterior').addEventListener('click', () => {
   if (paginaActual > 1) {
     paginaActual--;
     mostrarPagina(paginaActual);
@@ -146,8 +125,9 @@
     window.scrollTo(0, document.querySelector('.seccion-noticias').offsetTop - 20);
   }
 });
+
 document.getElementById('siguiente').addEventListener('click', () => {
-  const totalPaginas = Math.ceil((noticias.length - 1) / noticiasPorPagina);
+  const totalPaginas = Math.ceil(noticias.length / noticiasPorPagina);
   if (paginaActual < totalPaginas) {
     paginaActual++;
     mostrarPagina(paginaActual);
@@ -155,6 +135,7 @@ document.getElementById('siguiente').addEventListener('click', () => {
     window.scrollTo(0, document.querySelector('.seccion-noticias').offsetTop - 20);
   }
 });
+
 document.getElementById('inicio').addEventListener('click', () => {
   paginaActual = 1;
   mostrarPagina(paginaActual);
@@ -162,11 +143,7 @@ document.getElementById('inicio').addEventListener('click', () => {
   window.scrollTo(0, document.querySelector('.seccion-noticias').offsetTop - 20);
 });
 
-   
-
-  
-
-    document.addEventListener('DOMContentLoaded', cargarNoticias);
+document.addEventListener('DOMContentLoaded', cargarNoticias);
   </script>
 </body>
 </html>

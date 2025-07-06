@@ -58,20 +58,9 @@ async function cargarNoticiasPortada() {
 
     if (noticias.length === 0) return;
 
-    // Hero destacado
-    const hero = noticias[0];
-    document.getElementById('noticiaHeroPortada').innerHTML = `
-      <img src="${hero.imagen || 'https://via.placeholder.com/1200x400'}" alt="${hero.titulo}">
-      <div class="overlay">
-        <h3>${hero.titulo}</h3>
-        <a href="${hero.link}" target="_blank">Leer más</a>
-      </div>
-    `;
-
-    // 4 noticias secundarias
-    const contenedorSecundarias = document.getElementById('noticiasSecundariasPortada');
-    const secundarias = noticias.slice(1, 5);
-    secundarias.forEach(noticia => {
+    const contenedor = document.getElementById('noticiasPortada');
+    const primerasCinco = noticias.slice(0, 5);
+    primerasCinco.forEach(noticia => {
       const card = document.createElement('div');
       card.className = 'noticia-card-portada';
       card.innerHTML = `
@@ -81,7 +70,7 @@ async function cargarNoticiasPortada() {
           <small>${noticia.fuente} • ${noticia.fecha}</small>
         </div>
       `;
-      contenedorSecundarias.appendChild(card);
+      contenedor.appendChild(card);
     });
 
   } catch (e) {
