@@ -138,6 +138,7 @@ async function scrapearFuente(fuente, browser) {
           noticia.resumen = await extraerResumen(link);
 
           noticia.imagen =
+            $('figure.post-thumbnail img').attr('src') ||  // imagen destacada real
             $('meta[property="og:image"]').attr('content') ||
             $('article img').first().attr('src') ||
             null;
