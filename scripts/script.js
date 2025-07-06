@@ -79,3 +79,4 @@ async function cargarNoticiasPortada() {
 }
 
 document.addEventListener('DOMContentLoaded', cargarNoticiasPortada);
+
