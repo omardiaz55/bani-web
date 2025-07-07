@@ -23,7 +23,33 @@
   </head>
 <body>
     
-  <div id="navbar"></div>
+  <nav class="navbar" id="top">
+    <a href="index.html" style="text-decoration: none;">
+      <div class="navbar-logo">Mi Baní</div>
+    </a>
+  
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  
+    <ul class="navbar-links" id="navbarLinks">
+      <li><a href="index.html">Inicio</a></li>
+  
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">Categorías</a>
+        <ul class="submenu">
+          <li><a href="historia.html" onclick="closeMenu()">Historia</a></li>
+          <li><a href="cultura.html" onclick="closeMenu()">Cultura y Tradiciones</a></li>
+          <li><a href="gastronomia.html" onclick="closeMenu()">Gastronomía</a></li>
+          <li><a href="lugares.html" onclick="closeMenu()">Lugares de Interés</a></li>
+          <li><a href="economia.html" onclick="closeMenu()">Economía y Comercio</a></li>
+          <li><a href="vida-nocturna.html" onclick="closeMenu()">Vida Nocturna</a></li>
+          <li><a href="clima-geografia.html" onclick="closeMenu()">Clima y Geografía</a></li>
+          <li><a href="mitos.html" onclick="closeMenu()">Mitos y Leyendas</a></li>
+        </ul>
+      </li>
+  
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
 
   <section class="hero-seccion" style="background-image: url('imagenes/contacto-imagen.webp');">
     <div class="hero-overlay">
@@ -56,7 +82,33 @@
     
   </section>
 
-  <div id="footer"></div>
+   <footer class="footer-grid footer-5cols">
+        <div class="footer-column">
+          <h4>MiBaní.net</h4>
+          <p>Un espacio dedicado a compartir la historia, cultura y el encanto de Baní para el mundo.</p>
+          <ul>
+            <li><a href="acerca.html">Acerca de Nosotros</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Enlaces Rápidos</h4>
+          <ul>
+            <li><a href="historia.html">Historia</a></li>
+            <li><a href="cultura.html">Cultura y Tradiciones</a></li>
+            <li><a href="gastronomia.html">Gastronomía</a></li>
+            <li><a href="lugares.html">Lugares de Interés</a></li>
+            <li><a href="economia.html">Economía y Comercio</a></li>
+            <li><a href="vida-nocturna.html">Vida Nocturna</a></li>
+            <li><a href="clima.html">Clima y Geografía</a></li>
+            <li><a href="mitos.html">Mitos y Leyendas</a></li>
+          </ul>
+        </div>
+      </footer>
+      <div class="footer-bottom">
+        <p><em>“A pueblo bueno y trabajador este de Baní. ¡Ofrezcome, vale!”</em></p>
+        <p>🇩🇴 <a href="https://www.google.com/maps/place/Baní,+Rep%C3%BAblica+Dominicana" target="_blank">Ver Baní en el mapa</a></p>
+      </div>
 
     <script src="scripts/script.js"></script>
 
