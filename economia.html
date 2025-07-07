@@ -43,33 +43,7 @@
         <link rel="icon" href="imagenes/favicon_io/favicon.ico" type="image/x-icon">
     </head>
 <body>
-  <nav class="navbar" id="top">
-    <a href="index.html" style="text-decoration: none;">
-      <div class="navbar-logo">Mi Baní</div>
-    </a>
-  
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-  
-    <ul class="navbar-links" id="navbarLinks">
-      <li><a href="index.html">Inicio</a></li>
-  
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">Categorías</a>
-        <ul class="submenu">
-          <li><a href="historia.html" onclick="closeMenu()">Historia</a></li>
-          <li><a href="cultura.html" onclick="closeMenu()">Cultura y Tradiciones</a></li>
-          <li><a href="gastronomia.html" onclick="closeMenu()">Gastronomía</a></li>
-          <li><a href="lugares.html" onclick="closeMenu()">Lugares de Interés</a></li>
-          <li><a href="economia.html" onclick="closeMenu()">Economía y Comercio</a></li>
-          <li><a href="vida-nocturna.html" onclick="closeMenu()">Vida Nocturna</a></li>
-          <li><a href="clima-geografia.html" onclick="closeMenu()">Clima y Geografía</a></li>
-          <li><a href="mitos.html" onclick="closeMenu()">Mitos y Leyendas</a></li>
-        </ul>
-      </li>
-  
-      <li><a href="contacto.html">Contacto</a></li>
-    </ul>
-  </nav>
+  <div id="navbar"></div>
 
       <section class="hero-seccion" style="background-image: url('imagenes/economia-card.jpg');">
         <div class="hero-overlay">
@@ -105,9 +79,7 @@
             <a href="vida-nocturna.html" class="next-section">Siguiente →</a>
         </div>
     </div>
-    <footer>
-        <p>&copy; 2025 Mi Baní. Todos los derechos reservados.</p>
-    </footer>
+    <div id="footer"></div>
     <script src="scripts/script.js"></script>
 </body>
 </html>

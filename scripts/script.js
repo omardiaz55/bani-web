@@ -80,3 +80,114 @@ async function cargarNoticiasPortada() {
 
 document.addEventListener('DOMContentLoaded', cargarNoticiasPortada);
 
+// cargar navbar
+    fetch('navbar.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('navbar').innerHTML = html;
+      })
+      .catch(error => console.error('Error cargando navbar:', error));
+
+    // cargar footer
+    fetch('footer.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('footer').innerHTML = html;
+      })
+      .catch(error => console.error('Error cargando footer:', error));
+
+      // paginación de noticias
+let noticias = [];
+let paginaActual = 1;
+const noticiasPorPagina = 4;
+
+async function cargarNoticias() {
+  try {
+    const res = await fetch('noticias.json');
+    noticias = await res.json();
+
+    noticias.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+    mostrarPagina(paginaActual);
+    actualizarBotones();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function mostrarPagina(pagina) {
+  const grid = document.getElementById('gridNoticias');
+  if (!grid) return;  // seguridad
+  grid.innerHTML = '';
+  const inicio = (pagina - 1) * noticiasPorPagina;
+  const fin = inicio + noticiasPorPagina;
+  const noticiasPagina = noticias.slice(inicio, fin);
+
+  noticiasPagina.forEach(noticia => {
+    const card = document.createElement('div');
+    card.className = 'noticia-card noticia-listado';
+    card.innerHTML = `
+      <div class="noticia-miniatura">
+        <img src="${noticia.imagen || 'https://via.placeholder.com/300x200'}" alt="${noticia.titulo}">
+      </div>
+      <div class="noticia-contenido">
+        <h4><a href="${noticia.link}" target="_blank">${noticia.titulo}</a></h4>
+        <small><strong>${noticia.fuente}</strong> • ${noticia.fecha}</small>
+        <p>${noticia.resumen || ''}</p>
+        <div class="iconos-sociales">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(noticia.link)}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(noticia.link)}" target="_blank"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  const totalPaginas = Math.ceil(noticias.length / noticiasPorPagina);
+  document.getElementById('pagina-actual').textContent = `Página ${pagina} de ${totalPaginas}`;
+}
+
+function actualizarBotones() {
+  const anterior = document.getElementById('anterior');
+  const siguiente = document.getElementById('siguiente');
+  if (!anterior || !siguiente) return;  // seguridad
+  const totalPaginas = Math.ceil(noticias.length / noticiasPorPagina);
+  anterior.disabled = paginaActual === 1;
+  siguiente.disabled = paginaActual === totalPaginas;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  cargarNoticias();
+
+  const anterior = document.getElementById('anterior');
+  const siguiente = document.getElementById('siguiente');
+  const inicioBtn = document.getElementById('inicio');
+
+  if (anterior && siguiente && inicioBtn) {
+    anterior.addEventListener('click', () => {
+      if (paginaActual > 1) {
+        paginaActual--;
+        mostrarPagina(paginaActual);
+        actualizarBotones();
+        window.scrollTo(0, document.querySelector('.seccion-noticias').offsetTop - 20);
+      }
+    });
+
+    siguiente.addEventListener('click', () => {
+      const totalPaginas = Math.ceil(noticias.length / noticiasPorPagina);
+      if (paginaActual < totalPaginas) {
+        paginaActual++;
+        mostrarPagina(paginaActual);
+        actualizarBotones();
+        window.scrollTo(0, document.querySelector('.seccion-noticias').offsetTop - 20);
+      }
+    });
+
+    inicioBtn.addEventListener('click', () => {
+      paginaActual = 1;
+      mostrarPagina(paginaActual);
+      actualizarBotones();
+      window.scrollTo(0, document.querySelector('.seccion-noticias').offsetTop - 20);
+    });
+  }
+});
