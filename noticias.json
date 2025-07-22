@@ -1,91 +1,107 @@
 [
   {
+    "fuente": "El Poder Banilejo",
+    "titulo": "Codopyme advierte políticas actuales están desmantelando el sector productivo dominicano",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/opinion/15808-codopyme-advierte-politicas-actuales-estan-desmantelando-el-sector-productivo-dominicano",
+    "resumen": "ElpoderBanilejo.com La Confederación Dominicana de la Micro, Pequeña y Mediana Empresa (Codopyme), Fernando Pinales, advirtió al Gobierno, al Congreso Nacional y a toda la ciudadanía que el futuro de ese sector está en riesgo, debido a un \"modelo de desarrollo excluyente, injusto y regresivo\".",
+    "fecha": "2025-07-23",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/CODOPYME.png"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "Detienen a dominicano que hirió a agente inmigración",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/mundo/15805-detienen-a-dominicano-que-hirio-a-agente-inmigracion",
+    "resumen": "ElpoderBanilejo.com Un segundo sospechoso ha sido arrestado en relación con el tiroteo de un agente de Aduanas y Protección Fronteriza de Estados Unidos fuera de servicio en un parque de la ciudad de Nueva York, informaron autoridades el lunes.",
+    "fecha": "2025-07-23",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/AGENTES_MIGRA.png"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "Avanzan con celeridad trabajos Circunvalación de Baní",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/opinion/15802-avanzan-con-celeridad-trabajos-circunvalacion-de-bani",
+    "resumen": "ElpoderBanilejo.com Con gran celeridad han entrado en su etapa final los trabajos de construcción de la Avenida de Circunvalación de Baní, según informó ayer aquí, el Ministro de Obras Públicas, Eduardo Estrella.",
+    "fecha": "2025-07-23",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/CIRCUNVALACION_BANI1.png"
+  },
+  {
+    "fuente": "Manaclar Televisión",
+    "titulo": "Dos jóvenes mueren en tiroteo por rencillas personales en Baní",
+    "link": "https://manaclartelevision.com/locales/dos-jovenes-mueren-en-tiroteo-por-rencillas-personales-en-bani/",
+    "resumen": "Un violento enfrentamiento a tiros ocurrido en la madrugada de este martes dejó como resultado dos jóvenes muertos en el sector Los Cajuilitos, del municipio de Baní.",
+    "fecha": "2025-07-22",
+    "imagen": "https://manaclartelevision.com/wp-content/uploads/2025/07/cajuilitos.jpg"
+  },
+  {
+    "fuente": "Manaclar Televisión",
+    "titulo": "Agentes del DICRIM dan muerte a sospechoso de atracos en Baní",
+    "link": "https://manaclartelevision.com/locales/agentes-del-dicrim-dan-muerte-a-sospechoso-de-atracos-en-bani/",
+    "resumen": "Un hombre de 40 años perdió la vida la noche del lunes durante un operativo realizado por agentes del Departamento de Investigaciones Criminales (DICRIM) en el sector Villa Majega, en Baní.",
+    "fecha": "2025-07-22",
+    "imagen": "https://manaclartelevision.com/wp-content/uploads/2025/07/villa-manejga.jpg"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "Jóvenes ganadores del concurso de diseño del logo para el Plan Estratégico de Desarrollo reciben premios",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15811-jovenes-ganadores-del-concurso-de-diseno-del-logo-para-el-plan-estrategico-de-desarrollo-reciben-premios",
+    "resumen": "ElpoderBanilejo.com por Glendy Marte: En la mañana de este lunes, se realizó el acto de premiación del concurso para la selección del logo oficial que representará al Plan Estratégico de Desarrollo Sostenible Peravia 2025 durante los próximos 30 años.",
+    "fecha": "2025-07-22",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/JOVENES_DEPOR.jpg"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "Juegos deportivos intermunicipales inician el jueves",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15810-juegos-deportivos-intermunicipales-inician-el-jueves",
+    "resumen": "ElpoderBanilejo.com El poder Banilejo por Glendy Marte: El director provincial de deportes, Víctor Gil, ofreció hoy detalles sobre los preparativos para la celebración de los juegos intermunicipales, que iniciarán este jueves 24 de julio.",
+    "fecha": "2025-07-22",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/JUEGOS_DEPORTIVOIS.jpg"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "DPS Peravia desarrolla vacunación casa por casa contra VPH en niños y niñas de 9 a 14 años",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15809-dps-peravia-desarrolla-vacunacion-casa-por-casa-contra-vph-en-ninos-y-ninas-de-9-a-14-anos",
+    "resumen": "ElpoderBanilejo.com Peravia, R.D. – El Departamento de Inmunoprevenibles por Vacuna de la Dirección Provincial de Salud (DPS) Peravia ejecuta un operativo de vacunación casa por casa contra el Virus del Papiloma Humano (VPH), dirigido a niños y niñas de 9 a 14 años en toda la provincia.",
+    "fecha": "2025-07-22",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/DPS_PERA.jpg"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "Muere hombre tras recibir varios impactos de bala por agentes del DICRIM",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15807-muere-hombre-tras-recibir-varios-impactos-de-bala-por-agentes-del-dicrim",
+    "resumen": "ElpoderBanilejo.com VILLA MAJEGA, BANÍ.— Un hombre de 40 años resultó muerto a tiros en medio de un forcejeo al momento que este era detenido por varios agentes del (DICRIM) la noche de este Lunes en el populoso sector de Villa Mejega. Agentes adscritos del departamento de investigaciones de delitos...",
+    "fecha": "2025-07-22",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/MUERTTOO.jpg"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "Dos jovenes perdieron la vida en medio de fuerte tiroteo por rencillas personales",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15806-dos-jovenes-perdieron-la-vida-en-medio-de-fuerte-tiroteo-por-rencillas-personales",
+    "resumen": "ElpoderBanilejo.com LOS CAJUILITOS, BANÍ.— En medio de un fuerte tiroteo dos jóvenes fallecieron la madrugada de este Marte, en el populoso sector Los Cajuilitos del municipio de Baní.",
+    "fecha": "2025-07-22",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/MUEETOS.jpg"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "Matan a hombre y mujer por presunto asuntos pasionales",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15804-matan-a-hombre-y-mujer-por-presunto-asuntos-pasionales",
+    "resumen": "ElpoderBanilejo.com BANÍ. -Un doble homicidio ocurrido la tarde este sábado en el municipio Baní a sorprendido a todos los residentes del barrio (LOS CAYUQUITOS) en la zona norte de Baní.  Se trataban de los nombrados: Selis Mercedes Sánchez Germán , de 45 años de edad. Quién era maestra de educació...",
+    "fecha": "2025-07-22",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/PASIONES.jpg"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "Detienen hombre en Peravia con 13 paquetes presumiblemente marihuana",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15803-detienen-hombre-en-peravia-con-13-paquetes-presumiblemente-marihuana",
+    "resumen": "ElpoderBanilejo.com Las pacas de la sustancia fueron ocupadas en el interior de un tanque de gas",
+    "fecha": "2025-07-22",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/DETENIDOS2.jpg"
+  },
+  {
     "fuente": "CDN",
     "titulo": "Senpa y Medio Ambiente intensifican operativos contra extracción ilegal en Peravia y San Cristóbal",
     "link": "https://cdn.com.do/nacionales/operativos-senpa-extraccion-ilegal-peravia-san-cristobal/",
     "resumen": "Santo Domingo.– El Servicio Nacional de Protección Ambiental (Senpa), en coordinación con el Ministerio de Medio Ambiente y la Procuraduría Especializada de Medio Ambiente, intensificó esta semana sus operativos de inspección, supervisión y control en las provincias Peravia y San Cristóbal, tras rec...",
     "fecha": "2025-07-19",
     "imagen": "https://img.mmc.com.do/cdn-bucket/uploads/2025/07/WhatsApp-Image-2025-07-19-at-12.37.52-PM.jpeg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Junta distrital de Catalina realiza reunión con miembros de la Policía Nacional y la Digesett",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15801-junta-distrital-de-catalina-realiza-reunion-con-miembros-de-la-policia-nacional-y-la-digesett",
-    "resumen": "",
-    "fecha": "2025-07-19",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/IMG-20250718-WA0125.jpg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Maduro logra liberación de los 252 venezolanos presos en El Salvador",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/mundo/15800-maduro-logra-liberacion-de-los-252-venezolanos-presos-en-el-salvador",
-    "resumen": "Elpoderbanilejo.com El Gobierno de Venezuela confirmó este viernes que los 252 migrantes deportados por Estados Unidos a una cárcel de máxima seguridad de El Salvador han sido liberados, por lo que agradeció al expresidente español José Luis Rodríguez Zapatero.",
-    "fecha": "2025-07-19",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/Screenshot_20250718_224649_Gallery.jpg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Dirigente comunitario afirma faltan mejores políticas para frenar delincuencia.",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15799-dirigente-comunitario-afirma-faltan-mejores-politicas-para-frenar-delincuencia",
-    "resumen": "",
-    "fecha": "2025-07-19",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/IMG-20250718-WA0124.jpg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Precio del pollo sube por escasez y preocupa a comerciantes y amas de casa",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/opinion/15794-precio-del-pollo-sube-por-escasez-y-preocupa-a-comerciantes-y-amas-de-casa",
-    "resumen": "Elpoderbanilejo.com  Santo Domingo.-El precio del pollo, una de las carnes más consumidas por las familias dominicanas, ha experimentado un alza significativa en las últimas semanas, generando preocupación tanto en comerciantes como en consumidores.",
-    "fecha": "2025-07-19",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/POLLO.png"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Alcaldía de Baní inicia reparación de 18 viviendas en La Saona",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15798-alcaldia-de-bani-inicia-reparacion-de-18-viviendas-en-la-saona-2",
-    "resumen": "ElpoderBanilejo.com La Alcaldía de Baní inició el miércoles los trabajos de reparación de 18 viviendas en el sector La Saona, como parte de su compromiso con el mejoramiento de las condiciones de vida de las familias más vulnerables.",
-    "fecha": "2025-07-18",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/ALCALDIA_BANI_INCIA.jpg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Diputados aprueban Ley de Alquileres con modificaciones clave",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15797-diputados-aprueban-ley-de-alquileres-con-modificaciones-clave",
-    "resumen": "ElpoderBanilejo.com La Cámara de Diputados aprobó este viernes en segunda lectura el proyecto de Ley de Alquileres de Bienes Inmuebles, introduciendo importantes modificaciones a los aspectos que generaban mayor controversia entre sectores sociales, económicos y financieros.",
-    "fecha": "2025-07-18",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/LEY_ALQUILER.png"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Paya se prepara para celebrar sus fiestas patronales",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15796-paya-se-prepara-para-celebrar-sus-fiestas-patronales",
-    "resumen": "El poder Banilejo por Glendy Marte: Adonis Brea, presidente de comité organizador de las fiestas patronales Paya 2025, manifestó que ya están dando los toques finales a los preparativos para las mismas, que dan inicio mañana viernes 18 hasta el domingo 27 de julio.",
-    "fecha": "2025-07-17",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/PATRONMALES_PAYA.jpg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Santo Ramírez apuesta a Luis Baez como senador para el 2028",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15795-santo-ramirez-apuesta-a-luis-baez-como-senador-para-el-2028",
-    "resumen": "El poderbanilejo.com Bani.- En la tarde de ayer en una reunión grandiosa con el equipo de Santos Ramírez donde declaró oficialmente su respaldo a la candidatura de Luis báez senador, dijo que trabajará día y noche a favor de esa candidatura para que la provincia Peravia tenga un verdadero senador.",
-    "fecha": "2025-07-17",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/SANTO_LUIS.jpg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Concejo de Regidores de Baní convoca a vistas públicas para conocer solicitud de no objeción  de uso de suelo para instalación de estación de combustibles",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15793-concejo-de-regidores-de-bani-convoca-a-vistas-publicas-para-conocer-solicitud-de-no-objecion-de-uso-de-suelo-para-instalacion-de-estacion-de-combustibles",
-    "resumen": "Elpoderbanilejo.com El Concejo de Regidores del municipio de Baní convocó para el lunes 21 de julio, a empresarios, comerciantes, juntas de vecinos y ciudadanía en sentido general, a participar en las vistas públicas que se realizarán con el fin de socializar la solicitud de no objeción de uso de su...",
-    "fecha": "2025-07-17",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/VISTAS_PUBLICAS.jpg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Senador Julito Fulcar canaliza apertura de aulas inclusivas para niños con autismo en Peravia",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15792-senador-julito-fulcar-canaliza-apertura-de-aulas-inclusivas-para-ninos-con-autismo-en-peravia",
-    "resumen": "Elpoderbanilejo.com Baní, provincia Peravia. Como resultado de la solicitud realizada por el senador Julito Fulcar al Ministerio de Educación (MINERD), la directora de Educación Especial, Licda. Lucía Vásquez Espínola, visitó este miércoles las instalaciones del Distrito Educativo 03-04 en Baní para...",
-    "fecha": "2025-07-17",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/APERTURA_AULAS.jpg"
   },
   {
     "fuente": "Manaclar Televisión",
@@ -110,14 +126,6 @@
     "resumen": "Desesperada por la falta de oportunidades y con el deseo firme de mantener a su hijo con dignidad, una joven madre residente en el sector Santa Rosa, en Baní, acudió a un canal de televisión para solicitar empleo, afirmando que no pide limosna, sino una oportunidad de trabajo que —según sus palabras...",
     "fecha": "2025-07-14",
     "imagen": "https://manaclartelevision.com/wp-content/uploads/2025/07/WhatsApp-Image-2025-07-14-at-16.18.03.jpeg"
-  },
-  {
-    "fuente": "Manaclar Televisión",
-    "titulo": "Abogado asegura existe   mafia en la Policía Nacional que afecta libre ejercicio del Derecho Penal en Peravia",
-    "link": "https://manaclartelevision.com/locales/abogado-asegura-existe-mafia-en-la-policia-nacional-que-afecta-libre-ejercicio-del-derecho-penal-en-peravia/",
-    "resumen": "Peravia , R.D. El  abogado  Maspero Hatuey Santana,  denunció públicamente la existencia de una presunta red de corrupción dentro de la Policía Nacional, en la provincia Peravia, que estaría interfiriendo con el libre y justo ejercicio del derecho penal.",
-    "fecha": "2025-07-04",
-    "imagen": "https://manaclartelevision.com/wp-content/uploads/2025/07/WhatsApp-Image-2025-07-04-at-15.20.05.jpeg"
   },
   {
     "fuente": "CDN",
