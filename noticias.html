@@ -49,102 +49,85 @@
   <h2>Noticias de Baní</h2>
   <div class="grid-noticias" id="gridNoticias"></div>
 
-  <!-- PAGINACION -->
-  <div class="paginacion">
-    <button id="inicio">Inicio</button>
-    <button id="anterior">Anterior</button>
-    <span id="pagina-actual">Página 1</span>
-    <button id="siguiente">Siguiente</button>
-  </div>
-</section>
+  
 
 
 <script>
+document.addEventListener('DOMContentLoaded', async () => {
   let noticias = [];
-let paginaActual = 1;
-const noticiasPorPagina = 4;
+  let paginaActual = 1;
+  const noticiasPorPagina = 4;
+  let cargando = false;
 
-async function cargarNoticias() {
   try {
     const res = await fetch('noticias.json');
     noticias = await res.json();
-
     noticias.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-
-    mostrarPagina(paginaActual);
-    actualizarBotones();
+    cargarMasNoticias(); // primera carga
   } catch (err) {
-    console.error(err);
+    console.error('Error al cargar noticias:', err);
   }
-}
 
-function mostrarPagina(pagina) {
-  const grid = document.getElementById('gridNoticias');
-  grid.innerHTML = '';
-  const inicio = (pagina - 1) * noticiasPorPagina;
-  const fin = inicio + noticiasPorPagina;
-  const noticiasPagina = noticias.slice(inicio, fin);
+  function formatearTiempo(fechaISO) {
+    const fecha = new Date(fechaISO);
+    const ahora = new Date();
+    const diff = Math.floor((ahora - fecha) / 1000);
 
-  noticiasPagina.forEach(noticia => {
-    const card = document.createElement('div');
-    card.className = 'noticia-card noticia-listado';
-    card.innerHTML = `
-      <div class="noticia-miniatura">
-        <img src="${noticia.imagen || 'https://via.placeholder.com/300x200'}" alt="${noticia.titulo}">
-      </div>
-      <div class="noticia-contenido">
-        <h4><a href="${noticia.link}" target="_blank">${noticia.titulo}</a></h4>
-        <small><strong>${noticia.fuente}</strong> • ${noticia.fecha}</small>
-        <p>${noticia.resumen || ''}</p>
-        <div class="iconos-sociales">
-          <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(noticia.link)}" target="_blank"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(noticia.link)}" target="_blank"><i class="fab fa-twitter"></i></a>
+    if (diff < 60) return 'hace unos segundos';
+    if (diff < 3600) return `hace ${Math.floor(diff / 60)} min`;
+    if (diff < 86400) return `hace ${Math.floor(diff / 3600)} h`;
+    if (diff < 2592000) return `hace ${Math.floor(diff / 86400)} días`;
+
+    return fecha.toLocaleDateString('es-DO', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+  }
+
+  function cargarMasNoticias() {
+    if (cargando) return;
+    cargando = true;
+
+    const grid = document.getElementById('gridNoticias');
+    const inicio = (paginaActual - 1) * noticiasPorPagina;
+    const fin = inicio + noticiasPorPagina;
+    const noticiasPagina = noticias.slice(inicio, fin);
+
+    noticiasPagina.forEach(noticia => {
+      const card = document.createElement('div');
+      card.className = 'noticia-card noticia-listado';
+      card.innerHTML = `
+        <div class="noticia-miniatura">
+          <img src="${noticia.imagen || 'https://via.placeholder.com/300x200'}" alt="${noticia.titulo}">
         </div>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
+        <div class="noticia-contenido">
+          <h4><a href="${noticia.link}" target="_blank">${noticia.titulo}</a></h4>
+          <small><strong>${noticia.fuente}</strong> • ${formatearTiempo(noticia.fecha)}</small>
+          <p>${noticia.resumen || ''}</p>
+          <div class="iconos-sociales">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(noticia.link)}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(noticia.link)}" target="_blank"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
 
-  const totalPaginas = Math.ceil(noticias.length / noticiasPorPagina);
-  document.getElementById('pagina-actual').textContent = `Página ${pagina} de ${totalPaginas}`;
-}
-
-function actualizarBotones() {
-  const anterior = document.getElementById('anterior');
-  const siguiente = document.getElementById('siguiente');
-  const totalPaginas = Math.ceil(noticias.length / noticiasPorPagina);
-  anterior.disabled = paginaActual === 1;
-  siguiente.disabled = paginaActual === totalPaginas;
-}
-
-document.getElementById('anterior').addEventListener('click', () => {
-  if (paginaActual > 1) {
-    paginaActual--;
-    mostrarPagina(paginaActual);
-    actualizarBotones();
-    window.scrollTo(0, document.querySelector('.seccion-noticias').offsetTop - 20);
-  }
-});
-
-document.getElementById('siguiente').addEventListener('click', () => {
-  const totalPaginas = Math.ceil(noticias.length / noticiasPorPagina);
-  if (paginaActual < totalPaginas) {
     paginaActual++;
-    mostrarPagina(paginaActual);
-    actualizarBotones();
-    window.scrollTo(0, document.querySelector('.seccion-noticias').offsetTop - 20);
+    cargando = false;
   }
-});
 
-document.getElementById('inicio').addEventListener('click', () => {
-  paginaActual = 1;
-  mostrarPagina(paginaActual);
-  actualizarBotones();
-  window.scrollTo(0, document.querySelector('.seccion-noticias').offsetTop - 20);
+  window.addEventListener('scroll', () => {
+    const cercaDelFinal = window.innerHeight + window.scrollY >= document.body.offsetHeight - 400;
+    const hayMas = (paginaActual - 1) * noticiasPorPagina < noticias.length;
+    if (cercaDelFinal && hayMas) {
+      cargarMasNoticias();
+    }
+  });
 });
-
-document.addEventListener('DOMContentLoaded', cargarNoticias);
 </script>
+
 <footer class="footer-grid footer-5cols">
         <div class="footer-column">
           <h4>MiBaní.net</h4>
