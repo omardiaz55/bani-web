@@ -1,11 +1,59 @@
 [
   {
     "fuente": "El Poder Banilejo",
-    "titulo": "La corte brasileña descarta por ahora prisión preventiva de Bolsonaro",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/mundo/15823-la-corte-brasilena-descarta-por-ahora-prision-preventiva-de-bolsonaro",
-    "resumen": "elpoderBanilejo.com  Un juez de la corte suprema brasileña descartó este jueves imponer prisión preventiva al expresidente Jair Bolsonaro, juzgado por una supuesta intentona golpista, aunque advirtió que la aplicará de forma \"inmediata\" si incumple órdenes judiciales.",
-    "fecha": "2025-07-25",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/CORTE_BRASIL.png"
+    "titulo": "Malos olores y suciedad generan preocupación en el mercado municipal de Baní",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15834-malos-olores-y-suciedad-generan-preocupacion-en-el-mercado-municipal-de-bani",
+    "resumen": "ElpoderBanilejo.com por Glendy Marte: Vendedores, residentes cercanos y usuarios del mercado municipal de Baní han expresado su malestar por el avanzado deterioro en las condiciones de limpieza en varias áreas del establecimiento. La presencia de basura acumulada, aguas estancadas y malos olores, ha...",
+    "fecha": "2025-07-26",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/MALOS_OLORES.jpg"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "Sala Capitular aprueba instalación de estación de combustibles líquidos en avenida de la salud.",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15833-sala-capitular-aprueba-instalacion-de-estacion-de-combustibles-liquidos-en-avenida-de-la-salud",
+    "resumen": "ElpoderBanilejo.com por Glendy Marte: Indignación, descontento e impotencia fueron las palabras que lanzaron los comunitarios en la mañana de este viernes cuando fue aprobado la solicitud de no objeción de uso de suelo por parte de los Regidores para la instalación de la estación de combustible líqu...",
+    "fecha": "2025-07-26",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/SALA_CAPI.jpg"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "China propone plan global para regular la Inteligencia Artificial",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/mundo/15832-china-propone-plan-global-para-regular-la-inteligencia-artificial",
+    "resumen": "ElpoderBanilejo.com China presentó este sábado en Shanghái un plan de acción para la gobernanza global de la inteligencia artificial (IA), en el marco de la Conferencia Mundial de Inteligencia Artificial (WAIC), y propuso la creación de una organización internacional dedicada a coordinar los esfuerz...",
+    "fecha": "2025-07-26",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/PROPUESTA_CHINA.png"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "Inician juegos deportivos intermunicipales Peravia 2025",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15831-inician-juegos-deportivos-intermunicipales-peravia-2025",
+    "resumen": "ElpoderBanilejo.com por Glendy Marte: En el evento deportivo, auspiciado por la oficina senatorial de la provincia Peravia, se están desarrollando unas 13 disciplinas deportivas, con la participación de más de 600 atletas.",
+    "fecha": "2025-07-26",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/JUEGFOS_DEPOR.jpg"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "MOPC favorece con bacheos más de once sectores en Baní.",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15830-mopc-favorece-con-bacheos-mas-de-once-sectores-en-bani",
+    "resumen": "ElpoderBanilejo.com por Glendy Marte: En coordinación con la Alcaldía de Baní se continúa desarrollando un amplio programa de bacheo en distintos sectores del municipio, gracias a la colaboración del Ministerio de Obras Públicas y Comunicaciones, que dirige el ingeniero Eduardo Estrella.",
+    "fecha": "2025-07-26",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/MOPC.jpg"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "Policía recupera celular robado durante asalto en Baní",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15829-policia-recupera-celular-robado-durante-asalto-en-bani",
+    "resumen": "ElpoderBanilejo.com por Glendy Marte: A través de nota de prensa, la Dirección Regional Sur Central de la Policía Nacional informó que Miembros del DICRIM, con sede en Baní, recuperaron un teléfono celular que había sido sustraído mediante asalto a mano armada, gracias a labores de seguimiento elect...",
+    "fecha": "2025-07-26",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/CELL_ROBADOP.jpg"
+  },
+  {
+    "fuente": "El Poder Banilejo",
+    "titulo": "¿De qué acusa el Ministerio Público a Jean Pumarol, atacante de Naco?",
+    "link": "https://www.elpoderbanilejo.com/v6/index.php/opinion/15828-de-que-acusa-el-ministerio-publico-a-jean-pumarol-atacante-de-naco",
+    "resumen": "ElpoderBanilejo.com Santo Domingo.- El Ministerio Público acusa a Jean Andrés Pumarol Fernández de homicidio voluntario, tentativa de homicidio y violencia voluntaria, en violación de los artículos 295, 304 y 309 del Código Penal Dominicano, así como del artículo 2, que sanciona los intentos de homi...",
+    "fecha": "2025-07-26",
+    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/JEAM_PUMAROL.png"
   },
   {
     "fuente": "El Poder Banilejo",
@@ -30,54 +78,6 @@
     "resumen": "ElpoderBanilejo.com por Glendy Marte: Ricardo Jiménez explicó que ha iniciado un proyecto de cambiar los pisos de tierra por cemento, con el objetivo de mejorar la calidad de vida de los moradores de ese sector. Además, señaló que en otros casos han reparado viviendas que estaban en muy mal estado.",
     "fecha": "2025-07-24",
     "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/REPARACION_VIVIENDAS2.jpg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Senado reconoce a cuatro banilejos ejemplares por su legado en la educación y la cultura",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15824-senado-reconoce-a-cuatro-banilejos-ejemplares-por-su-legado-en-la-educacion-y-la-cultura",
-    "resumen": "ElpoderBanilejo.com Julito Fulcar resalta el orgullo banilejo al entregar distinciones",
-    "fecha": "2025-07-24",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/SENADO_FULCAR1.jpg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Avanza rápidamente la construcción de la Avenida de Circunvalación de Baní",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15822-avanza-rapidamente-la-construccion-de-la-avenida-de-circunvalacion-de-bani",
-    "resumen": "ElpoderBanilejo.com por Glendy Marte: Los trabajos de construcción de la Avenida de Circunvalación de Baní han entrado en su etapa final, informó ayer el Ministro de Obras Públicas, Eduardo Estrella.",
-    "fecha": "2025-07-24",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/CONTRUCCION_CIRCUMVA.jpg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Segunda fase Hospital Nuestra Señora de Regla terminará último trimestre del año",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15821-segunda-fase-hospital-nuestra-senora-de-regla-terminara-ultimo-trimestre-del-ano",
-    "resumen": "ElpoderBanilejo.com por Glendy Marte: José Lara, director del hospital Nuestra Señora de Regla ofreció detalles de los avances de los trabajos de remozamiento del centro de salud.",
-    "fecha": "2025-07-24",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/HOSPITAL_INTER.jpg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Policía destaca que la rápida intervención de agentes del nuevo modelo evitó tragedia mayor en Naco",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15820-policia-destaca-que-la-rapida-intervencion-de-agentes-del-nuevo-modelo-evito-tragedia-mayor-en-naco",
-    "resumen": "ElpoderBanilejo.com  La Policía Nacional resaltó este jueves que la rápida intervención de los agentes del nuevo modelo policial evitó que el violento ataque perpetrado por Jean Andrés Pumarol Fernández, de 30 años, en el condominio Dorado IV, en el ensanche Naco, tuviera consecuencias aún más devas...",
-    "fecha": "2025-07-24",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/NACO.png"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Edesur Dominicana desmantela 26 transformadores ilegales en Peravia, Barahona y San Juan",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15819-edesur-dominicana-desmantela-26-transformadores-ilegales-en-peravia-barahona-y-san-juan",
-    "resumen": "ElpoderBanilejo.com La empresa distribuidora de electricidad desarrolló un intenso operativo en su área de concesión",
-    "fecha": "2025-07-23",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/EDESUR_BAN.jpg"
-  },
-  {
-    "fuente": "El Poder Banilejo",
-    "titulo": "Sepultan a hombre muerto a manos de la Policía en Baní",
-    "link": "https://www.elpoderbanilejo.com/v6/index.php/bani/15818-sepultan-a-hombre-muerto-a-manos-de-la-policia-en-bani",
-    "resumen": "ElpoderBanilejo.com En medio del llanto y fuertes críticas a la agresividad policial, fueron sepultados a las 10:00 de la mañana de hoy miércoles los restos de un hombre que fue ejecutado la noche del lunes por cinco agentes del Departamento de Investigaciones de Crímenes y Delitos (DICRIM) de la Po...",
-    "fecha": "2025-07-23",
-    "imagen": "https://www.elpoderbanilejo.com/v6/images/poderB13/MUERTO_8.jpg"
   },
   {
     "fuente": "Manaclar Televisión",
