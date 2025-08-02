@@ -1,18 +1,10 @@
 [
   {
-    "fuente": "CDN",
-    "titulo": "Familiares claman justicia ante doble asesinato en Carretón de Baní",
-    "link": "https://cdn.com.do/nacionales/familiares-claman-justicia-ante-doble-asesinato-en-bani/",
-    "resumen": "Baní, RD.– El dolor sigue vivo. Familiares de dos jóvenes asesinados en 2022 claman justicia y señalan a tres hombres como responsables del sangriento doble crimen.",
-    "fecha": "2025-08-01",
-    "imagen": "https://img.mmc.com.do/cdn-bucket/uploads/2025/08/Justicia.jpg-6.jpg"
-  },
-  {
     "fuente": "Manaclar Televisión",
     "titulo": "Familiares de Bernardo Cabrera exigen justicia en Baní; rechazan versión oficial de la Policía",
     "link": "https://manaclartelevision.com/locales/familiares-de-bernardo-cabrera-exigen-justicia-en-bani-rechazan-version-oficial-de-la-policia/",
     "resumen": "Baní, Peravia –Durante el último novenario en memoria de Bernardo Cabrera, ultimado el pasado 22 de julio por agentes de la Dirección Central de Investigaciones Criminales (DICRIM) en Baní, su familia reiteró su exigencia de justicia y cuestionó la versión ofrecida por la Policía Nacional sobre el h...",
-    "fecha": "2025-08-01",
+    "fecha": "2025-08-02",
     "imagen": "https://manaclartelevision.com/wp-content/uploads/2025/08/WhatsApp-Image-2025-08-01-at-17.03.17.jpeg"
   },
   {
@@ -20,8 +12,16 @@
     "titulo": "Residentes del Residencial Shalom rechazan aprobación de estación de combustible en Baní",
     "link": "https://manaclartelevision.com/locales/residentes-del-residencial-shalom-rechazan-aprobacion-de-estacion-de-combustible-en-bani/",
     "resumen": "Baní, Peravia –Residentes del residencial Shalom, ubicado en la avenida Fabio Herrera de Baní, expresaron su rechazo a la aprobación de una estación de combustible en las inmediaciones del complejo. Denuncian que no fueron consultados y consideran que la instalación representa un riesgo para la salu...",
-    "fecha": "2025-08-01",
+    "fecha": "2025-08-02",
     "imagen": "https://manaclartelevision.com/wp-content/uploads/2025/08/WhatsApp-Image-2025-08-01-at-16.57.47-1.jpeg"
+  },
+  {
+    "fuente": "CDN",
+    "titulo": "Familiares claman justicia ante doble asesinato en Carretón de Baní",
+    "link": "https://cdn.com.do/nacionales/familiares-claman-justicia-ante-doble-asesinato-en-bani/",
+    "resumen": "Baní, RD.– El dolor sigue vivo. Familiares de dos jóvenes asesinados en 2022 claman justicia y señalan a tres hombres como responsables del sangriento doble crimen.",
+    "fecha": "2025-08-01",
+    "imagen": "https://img.mmc.com.do/cdn-bucket/uploads/2025/08/Justicia.jpg-6.jpg"
   },
   {
     "fuente": "El Poder Banilejo",
