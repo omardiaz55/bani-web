@@ -8,24 +8,20 @@ module.exports = [
     base: "",
     filtrar: () => true,
 
-    // Usa solo Axios + Cheerio (sin Puppeteer)
     obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
         const { data } = await fetchConReintentos(link);
         const $ = cheerio.load(data);
-        // Primero intenta meta estándar
         let fecha = $('meta[property="article:published_time"]').attr('content')
                  || $('meta[name="pubdate"]').attr('content')
                  || $('time[datetime]').attr('datetime')
                  || null;
 
         if (!fecha) {
-          // fallback: texto visible (puede estar en español)
           const texto = $('time, .entry-date, .posted-on').first().text().trim();
           if (texto) fecha = texto;
         }
 
-        // Normaliza a ISO (maneja meses en español si es texto)
         const iso = normalizarFecha(fecha);
         if (!iso) {
           console.warn(`⚠️ Fecha inválida en ${link}: ${fecha}, usando fecha actual`);
@@ -43,7 +39,6 @@ module.exports = [
     nombre: "El Poder Banilejo",
     url: "https://www.elpoderbanilejo.com/v6/index.php/bani",
 
-    // Usa Puppeteer (reutiliza el browser externo)
     obtenerEnlaces: async (browser) => {
       let page;
       try {
@@ -53,15 +48,13 @@ module.exports = [
           waitUntil: 'networkidle2',
           timeout: 60000
         });
-        // pequeña espera para layouts dinámicos
-        await page.waitForTimeout(3500);
+        await sleep(3500); // antes: page.waitForTimeout(3500)
 
         const enlaces = await page.evaluate(() => {
           const as = Array.from(document.querySelectorAll('h1 a, h2 a, h3 a, .post-title a, .entry-title a'));
           const wanted = as
             .map(el => el.href?.trim())
             .filter(href => href && /(bani|baní|peravia)/i.test(href));
-          // quitar duplicados simples
           return Array.from(new Set(wanted));
         });
 
@@ -81,7 +74,7 @@ module.exports = [
         page = await browser.newPage();
         await endurecerPagina(page);
         await page.goto(link, { waitUntil: 'domcontentloaded', timeout: 60000 });
-        await page.waitForTimeout(2000);
+        await sleep(2000); // antes: page.waitForTimeout(2000)
 
         const html = await page.content();
         const $ = cheerio.load(html);
@@ -122,7 +115,7 @@ module.exports = [
           waitUntil: 'networkidle2',
           timeout: 60000
         });
-        await page.waitForTimeout(3000);
+        await sleep(3000); // antes: page.waitForTimeout(3000)
 
         const links = await page.evaluate(() => {
           const as = Array.from(document.querySelectorAll('h1 a, h2 a, h3 a, .post-title a, .entry-title a'));
@@ -148,19 +141,17 @@ module.exports = [
         page = await browser.newPage();
         await endurecerPagina(page);
         await page.goto(link, { waitUntil: 'domcontentloaded', timeout: 60000 });
+        // antes usábamos waitForSelector + waitForTimeout; dejamos solo un pequeño sleep
+        await sleep(800);
 
-        // Selector flexible; si no aparece, seguimos igual
-        await page.waitForSelector('span.published, time, .post-date', { timeout: 5000 }).catch(() => {});
         const html = await page.content();
         const $ = cheerio.load(html);
 
-        // TITULO
         const titulo = $('h1').text().trim()
                      || $('h2').first().text().trim()
                      || $('meta[property="og:title"]').attr('content')?.trim()
                      || link;
 
-        // FECHA
         let fechaCruda =
           $('span.published').text().trim()
           || $('time[datetime]').attr('datetime')
@@ -168,17 +159,14 @@ module.exports = [
           || $('time, .post-date, .entry-date').first().text().trim()
           || '';
 
-        // Ejemplos: “Publicado: 28 Junio 2015” o ISO
         fechaCruda = fechaCruda.replace(/^Publicado:\s*/i, '').trim();
         const fecha = normalizarFecha(fechaCruda) || hoyISO();
 
-        // IMAGEN
         const imagen = $('span img').attr('src')
                    || $('meta[property="og:image"]').attr('content')
                    || $('article img').first().attr('src')
                    || null;
 
-        // RESUMEN
         const resumen =
           $('span[style*="font-size"]').text().trim()
           || $('p').map((i, el) => $(el).text().trim()).get()
@@ -204,7 +192,6 @@ module.exports = [
       return /ban[ií]|peravia/i.test(titulo) || /ban[ií]|peravia/i.test(link);
     },
 
-    // Axios + Cheerio (sin Puppeteer) con parseo de fecha robusto
     obtenerFecha: async (link, cheerio, fetchConReintentos) => {
       try {
         const { data } = await fetchConReintentos(link);
@@ -228,7 +215,6 @@ module.exports = [
 
 /* ================= Utilidades compartidas ================= */
 
-// UA y endurecimiento de página para menos bloqueos y más estabilidad
 async function endurecerPagina(page) {
   await page.setUserAgent(
     'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
@@ -237,7 +223,6 @@ async function endurecerPagina(page) {
   await page.setRequestInterception(false);
   page.setDefaultNavigationTimeout(60000);
   page.setDefaultTimeout(30000);
-  // Opcional: reducir huella
   try {
     await page.evaluateOnNewDocument(() => {
       Object.defineProperty(navigator, 'webdriver', { get: () => false });
@@ -245,24 +230,20 @@ async function endurecerPagina(page) {
   } catch {}
 }
 
-// Convierte diferentes formatos (ISO, “28 Junio 2015”, etc.) a YYYY-MM-DD
+function sleep(ms) {
+  return new Promise(res => setTimeout(res, ms));
+}
+
 function normalizarFecha(fecha) {
   if (!fecha || typeof fecha !== 'string') return null;
-
   let f = fecha.trim();
 
-  // Si viene ISO con tiempo
   if (/^\d{4}-\d{2}-\d{2}T/.test(f)) {
     const d = new Date(f);
     return isNaN(d) ? null : d.toISOString().split('T')[0];
   }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(f)) return f;
 
-  // Si viene ISO solo fecha
-  if (/^\d{4}-\d{2}-\d{2}$/.test(f)) {
-    return f;
-  }
-
-  // Reemplazar meses en español por inglés para que Date() los entienda
   const meses = {
     enero: 'January', febrero: 'February', marzo: 'March',
     abril: 'April', mayo: 'May', junio: 'June', julio: 'July',
@@ -270,7 +251,6 @@ function normalizarFecha(fecha) {
     octubre: 'October', noviembre: 'November', diciembre: 'December'
   };
 
-  // “28 Junio 2015”, “28 de Junio de 2015”, etc.
   const mEsp = f.toLowerCase()
     .replace(/de\s+/g, ' ')
     .replace(/,\s*/g, ' ')
@@ -278,9 +258,7 @@ function normalizarFecha(fecha) {
     .trim();
 
   const partes = mEsp.split(' ');
-  // patrones comunes: [28, junio, 2015] | [junio, 28, 2015]
   if (partes.length >= 3) {
-    // Detecta si el mes está en posición 1 (día mes año) o 0 (mes día año)
     const idxMes = Object.keys(meses).indexOf(partes[1]);
     const idxMesAlt = Object.keys(meses).indexOf(partes[0]);
 
@@ -303,7 +281,6 @@ function normalizarFecha(fecha) {
     }
   }
 
-  // Último intento: dejar que Date() parsee (si ya viene en inglés)
   const d = new Date(f);
   return isNaN(d) ? null : d.toISOString().split('T')[0];
 }
