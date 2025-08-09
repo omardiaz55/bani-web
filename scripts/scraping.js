@@ -1,4 +1,3 @@
-
 const pLimit = require('p-limit');
 const axios = require('axios');
 const cheerio = require('cheerio');
@@ -8,13 +7,19 @@ const fuentes = require('./fuentes');
 const path = require('path');
 
 const normalizar = texto =>
-  texto.toLowerCase().replace(/[^À-ſa-z0-9\s]/gi, '').replace(/\s+/g, ' ').trim();
+  String(texto || '')
+    .toLowerCase()
+    .replace(/[^À-ſa-z0-9\s]/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 
 const axiosInstancia = axios.create({
   timeout: 15000,
   headers: {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    'User-Agent':
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+    Accept:
+      'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
   },
 });
 
@@ -37,12 +42,14 @@ async function extraerResumen(link) {
     const parrafos = $('p, .entry-content p, .post-content p')
       .map((i, el) => $(el).text().trim())
       .get();
-    const resumen = parrafos.find(p =>
-      p.length > 60 && !/compartir|síguenos|related/i.test(p)
+    const resumen = parrafos.find(
+      p => p.length > 60 && !/compartir|síguenos|related/i.test(p)
     );
     return resumen || '';
   } catch (e) {
-    console.warn(`⚠️ No se pudo extraer resumen de: ${link} - Error: ${e.message}`);
+    console.warn(
+      `⚠️ No se pudo extraer resumen de: ${link} - Error: ${e.message}`
+    );
     return '';
   }
 }
@@ -53,19 +60,30 @@ async function obtenerFechaReal(fuente, link, browser) {
       console.warn(`⚠️ Fuente ${fuente.nombre} no tiene función obtenerFecha`);
       return null;
     }
-    const fecha = await fuente.obtenerFecha(link, cheerio, fetchConReintentos, browser);
+    const fecha = await fuente.obtenerFecha(
+      link,
+      cheerio,
+      fetchConReintentos,
+      browser
+    );
     if (!fecha) {
-      console.warn(`⚠️ No se pudo extraer fecha de ${link} en ${fuente.nombre}`);
+      console.warn(
+        `⚠️ No se pudo extraer fecha de ${link} en ${fuente.nombre}`
+      );
       return null;
     }
     const fechaParseada = new Date(fecha);
     if (isNaN(fechaParseada)) {
-      console.warn(`⚠️ Fecha inválida en ${link} de ${fuente.nombre}: ${fecha}`);
+      console.warn(
+        `⚠️ Fecha inválida en ${link} de ${fuente.nombre}: ${fecha}`
+      );
       return null;
     }
     return fechaParseada.toISOString().split('T')[0];
   } catch (e) {
-    console.error(`❌ Error al obtener fecha de ${link} en ${fuente.nombre}: ${e.message}`);
+    console.error(
+      `❌ Error al obtener fecha de ${link} en ${fuente.nombre}: ${e.message}`
+    );
     return null;
   }
 }
@@ -91,7 +109,7 @@ async function lanzarBrowser() {
 async function scrapearFuente(fuente, browser) {
   const noticias = [];
   try {
-    // Obtener enlaces
+    // Obtener enlaces (vía puppeteer o axios)
     let enlaces = [];
     if (fuente.obtenerEnlaces) {
       enlaces = await fuente.obtenerEnlaces(browser);
@@ -103,7 +121,9 @@ async function scrapearFuente(fuente, browser) {
           const titulo = $(el).text().trim();
           let link = $(el).attr('href');
           if (!titulo || !link) {
-            console.warn(`⚠️ Enlace inválido en ${fuente.nombre}: título=${titulo}, link=${link}`);
+            console.warn(
+              `⚠️ Enlace inválido en ${fuente.nombre}: título=${titulo}, link=${link}`
+            );
             return null;
           }
           if (fuente.base && link.startsWith('/')) {
@@ -112,27 +132,31 @@ async function scrapearFuente(fuente, browser) {
           return fuente.filtrar(titulo, link) ? link : null;
         })
         .get()
-        .filter(link =>
-          link &&
-          !link.includes('facebook.com') &&
-          !link.includes('twitter.com') &&
-          !link.includes('instagram.com') &&
-          !link.includes('youtube.com')
-        );
+        .filter(Boolean);
     }
 
-    enlaces = enlaces.slice(0, 10);
+    // Normaliza y filtra enlaces válidos
+    enlaces = enlaces
+      .filter(e => typeof e === 'string' && /^https?:\/\//i.test(e))
+      .slice(0, 10);
+
     console.log(`✅ ${fuente.nombre}: ${enlaces.length} noticias encontradas`);
 
     for (const link of enlaces) {
-      const urlStr = (typeof link === 'string') ? link : link.link;
+      const urlStr =
+        typeof link === 'string' ? link : link?.link ? link.link : null;
+      if (!urlStr || !/^https?:\/\//i.test(urlStr)) {
+        console.warn(`⚠️ Enlace inválido descartado en ${fuente.nombre}:`, link);
+        continue;
+      }
+
       const noticia = {
         fuente: fuente.nombre,
-        titulo: (typeof link === 'string') ? null : (link.titulo || null),
+        titulo: typeof link === 'string' ? null : link.titulo || null,
         link: urlStr,
         resumen: null,
         fecha: null,
-        imagen: null
+        imagen: null,
       };
 
       // Obtener título, resumen e imagen
@@ -142,12 +166,17 @@ async function scrapearFuente(fuente, browser) {
           const $ = cheerio.load(data);
 
           noticia.titulo =
-            $('h1, .post-title, .entry-title, article header h1').first().text().trim() ||
+            $('h1, .post-title, .entry-title, article header h1')
+              .first()
+              .text()
+              .trim() ||
             $('meta[property="og:title"]').attr('content')?.trim() ||
             urlStr;
 
           if (!noticia.titulo || noticia.titulo === urlStr) {
-            console.warn(`⚠️ No se encontró título válido en ${urlStr}, se usará el propio enlace como título.`);
+            console.warn(
+              `⚠️ No se encontró título válido en ${urlStr}, se usará el propio enlace como título.`
+            );
             noticia.titulo = urlStr;
           }
 
@@ -158,9 +187,10 @@ async function scrapearFuente(fuente, browser) {
             $('meta[property="og:image"]').attr('content') ||
             $('article img').first().attr('src') ||
             null;
-
         } catch (e) {
-          console.warn(`⚠️ Error al obtener título/imagen de ${urlStr}: ${e.message}`);
+          console.warn(
+            `⚠️ Error al obtener título/imagen de ${urlStr}: ${e.message}`
+          );
           noticia.titulo = urlStr;
         }
       } else {
@@ -177,14 +207,27 @@ async function scrapearFuente(fuente, browser) {
 
       // recortar resumen a 300 caracteres
       if (noticia.resumen) {
-        noticia.resumen = noticia.resumen.length > 300
-          ? noticia.resumen.slice(0, 300) + "..."
-          : noticia.resumen;
+        noticia.resumen =
+          noticia.resumen.length > 300
+            ? noticia.resumen.slice(0, 300) + '...'
+            : noticia.resumen;
+      }
+
+      // Defaults defensivos antes del push
+      if (!noticia.titulo || typeof noticia.titulo !== 'string') {
+        noticia.titulo = urlStr;
+      }
+      if (!noticia.link || typeof noticia.link !== 'string') {
+        noticia.link = urlStr;
       }
 
       noticias.push(noticia);
 
-      console.log(`🧠 Generando datos para: ${noticia.titulo} [imagen: ${noticia.imagen || 'sin imagen'}]`);
+      console.log(
+        `🧠 Generando datos para: ${noticia.titulo} [imagen: ${
+          noticia.imagen || 'sin imagen'
+        }]`
+      );
 
       await new Promise(resolve => setTimeout(resolve, 500));
     }
@@ -197,11 +240,18 @@ async function scrapearFuente(fuente, browser) {
 function filtrarYFormatear(noticias) {
   const unicas = new Map();
   noticias.forEach(n => {
+    if (!n || !n.titulo || !n.link) return; // ignora entradas inválidas
+
+    // Descarta si el "título" es literalmente la URL (ruido)
     if (n.titulo === n.link) {
-      console.warn(`⚠️ Noticia descartada porque el título es igual al link: ${n.link}`);
+      console.warn(
+        `⚠️ Noticia descartada porque el título es igual al link: ${n.link}`
+      );
+      return;
     }
-    const clave = normalizar(n.titulo);
-    if (!unicas.has(clave) && n.titulo !== 'Sin título' && n.titulo !== n.link) {
+
+    const clave = normalizar(String(n.titulo));
+    if (!unicas.has(clave) && n.titulo !== 'Sin título') {
       unicas.set(clave, n);
     }
   });
@@ -212,7 +262,9 @@ async function main() {
   console.log('🔍 Buscando noticias sobre Baní...\n');
   const resultados = [];
 
-  const fuentesConPuppeteer = fuentes.filter(f => typeof f.obtenerEnlaces === 'function');
+  const fuentesConPuppeteer = fuentes.filter(
+    f => typeof f.obtenerEnlaces === 'function'
+  );
   const fuentesConAxios = fuentes.filter(f => !f.obtenerEnlaces);
 
   let browser = null;
@@ -267,4 +319,3 @@ main().catch(err => {
   console.error(`❌ Error en el proceso principal: ${err.message}`);
   process.exit(1);
 });
-
