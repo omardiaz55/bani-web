@@ -1,3 +1,4 @@
+
 const pLimit = require('p-limit');
 const axios = require('axios');
 const cheerio = require('cheerio');
@@ -69,6 +70,24 @@ async function obtenerFechaReal(fuente, link, browser) {
   }
 }
 
+// Lanzador robusto de Chrome para cron/systemd usando el Chromium propio de Puppeteer
+async function lanzarBrowser() {
+  const pathChrome = puppeteer.executablePath(); // ~/.cache/puppeteer/.../chrome
+  console.log('Usando Chrome en:', pathChrome);
+  return puppeteer.launch({
+    executablePath: pathChrome,
+    headless: 'new',
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--single-process',
+      '--no-zygote',
+    ],
+    protocolTimeout: 120_000,
+  });
+}
+
 async function scrapearFuente(fuente, browser) {
   const noticias = [];
   try {
@@ -106,49 +125,46 @@ async function scrapearFuente(fuente, browser) {
     console.log(`✅ ${fuente.nombre}: ${enlaces.length} noticias encontradas`);
 
     for (const link of enlaces) {
-  const noticia = {
-    fuente: fuente.nombre,
-    titulo: null,
-    link: typeof link === 'string' ? link : link.link,
-    resumen: null,
-    fecha: null,
-    imagen: null
-  };
-
-  if (typeof link !== 'string') {
-    noticia.titulo = link.titulo;
-  }
+      const urlStr = (typeof link === 'string') ? link : link.link;
+      const noticia = {
+        fuente: fuente.nombre,
+        titulo: (typeof link === 'string') ? null : (link.titulo || null),
+        link: urlStr,
+        resumen: null,
+        fecha: null,
+        imagen: null
+      };
 
       // Obtener título, resumen e imagen
       if (!fuente.obtenerDatosNoticia) {
         try {
-          const { data } = await fetchConReintentos(link);
+          const { data } = await fetchConReintentos(urlStr);
           const $ = cheerio.load(data);
 
-            noticia.titulo =
-              $('h1, .post-title, .entry-title, article header h1').first().text().trim() ||
-              $('meta[property="og:title"]').attr('content')?.trim() ||
-              link;
-          // Validación reforzada
-          if (!noticia.titulo || noticia.titulo === link) {
-            console.warn(`⚠️ No se encontró título válido en ${link}, se usará el propio enlace como título.`);
-            noticia.titulo = link;
+          noticia.titulo =
+            $('h1, .post-title, .entry-title, article header h1').first().text().trim() ||
+            $('meta[property="og:title"]').attr('content')?.trim() ||
+            urlStr;
+
+          if (!noticia.titulo || noticia.titulo === urlStr) {
+            console.warn(`⚠️ No se encontró título válido en ${urlStr}, se usará el propio enlace como título.`);
+            noticia.titulo = urlStr;
           }
 
-          noticia.resumen = await extraerResumen(link);
+          noticia.resumen = await extraerResumen(urlStr);
 
           noticia.imagen =
-            $('figure.post-thumbnail img').attr('src') ||  // imagen destacada real
+            $('figure.post-thumbnail img').attr('src') ||
             $('meta[property="og:image"]').attr('content') ||
             $('article img').first().attr('src') ||
             null;
 
         } catch (e) {
-          console.warn(`⚠️ Error al obtener título/imagen de ${link}: ${e.message}`);
-          noticia.titulo = link;
+          console.warn(`⚠️ Error al obtener título/imagen de ${urlStr}: ${e.message}`);
+          noticia.titulo = urlStr;
         }
       } else {
-        const datos = await fuente.obtenerDatosNoticia(link, browser);
+        const datos = await fuente.obtenerDatosNoticia(urlStr, browser);
         noticia.titulo = datos.titulo;
         noticia.resumen = datos.resumen;
         noticia.fecha = datos.fecha;
@@ -156,17 +172,17 @@ async function scrapearFuente(fuente, browser) {
       }
 
       if (!noticia.fecha) {
-        noticia.fecha = await obtenerFechaReal(fuente, link, browser);
+        noticia.fecha = await obtenerFechaReal(fuente, urlStr, browser);
       }
 
       // recortar resumen a 300 caracteres
-if (noticia.resumen) {
-  noticia.resumen = noticia.resumen.length > 300
-    ? noticia.resumen.slice(0, 300) + "..."
-    : noticia.resumen;
-}
+      if (noticia.resumen) {
+        noticia.resumen = noticia.resumen.length > 300
+          ? noticia.resumen.slice(0, 300) + "..."
+          : noticia.resumen;
+      }
 
-noticias.push(noticia);
+      noticias.push(noticia);
 
       console.log(`🧠 Generando datos para: ${noticia.titulo} [imagen: ${noticia.imagen || 'sin imagen'}]`);
 
@@ -195,21 +211,17 @@ function filtrarYFormatear(noticias) {
 async function main() {
   console.log('🔍 Buscando noticias sobre Baní...\n');
   const resultados = [];
-  const isLinux = process.platform === 'linux';
 
   const fuentesConPuppeteer = fuentes.filter(f => typeof f.obtenerEnlaces === 'function');
   const fuentesConAxios = fuentes.filter(f => !f.obtenerEnlaces);
 
   let browser = null;
   if (fuentesConPuppeteer.length > 0) {
-    browser = await puppeteer.launch({
-      executablePath: isLinux ? '/usr/bin/chromium-browser' : undefined,
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
+    browser = await lanzarBrowser();
   }
 
-  const limit = pLimit(3);
+  // Concurrencia más conservadora para estabilidad bajo cron/systemd
+  const limit = pLimit(2);
 
   const tareasAxios = fuentesConAxios.map(fuente =>
     limit(() => scrapearFuente(fuente, null))
@@ -243,10 +255,8 @@ async function main() {
   });
 
   try {
-    fs.writeFileSync(
-      path.join(__dirname, '../noticias.json'),
-      JSON.stringify(ordenadas, null, 2)
-    );
+    const salida = path.resolve(__dirname, '../noticias.json');
+    fs.writeFileSync(salida, JSON.stringify(ordenadas, null, 2));
     console.log(`\n📝 ${ordenadas.length} noticias guardadas en noticias.json`);
   } catch (e) {
     console.error(`❌ Error escribiendo noticias.json: ${e.message}`);
@@ -257,3 +267,4 @@ main().catch(err => {
   console.error(`❌ Error en el proceso principal: ${err.message}`);
   process.exit(1);
 });
+
